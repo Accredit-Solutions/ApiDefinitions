@@ -1,0 +1,233 @@
+---
+openapi: 3.0.0
+info:
+  title: Event Data
+  description: "## Accredit API for retrieving event data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 2.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/v2.0/event/getEvents:
+    post:
+      tags:
+      - api/event
+      summary: List event data
+      description: |
+        Retrieve all event data available to the current user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetEventsRequest'
+        required: true
+      responses:
+        "200":
+          description: List of events data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventsResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v2.0/event/getEventAreas:
+    post:
+      tags:
+      - api/event
+      summary: List event area data
+      description: |
+        Retrieve all event area data available to the current user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetEventAreasRequest'
+        required: true
+      responses:
+        "200":
+          description: List of event areas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventAreasResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    GetEventsRequest:
+      type: object
+      properties:
+        StartDate:
+          type: string
+          description: Filter the results by event start date.
+          format: date-time
+        EndDate:
+          type: string
+          description: Filter the results by event end date.
+          format: date-time
+        PageNumber:
+          type: integer
+          description: Set the page number for pagination.
+          example: 1
+          default: 1
+        PageSize:
+          type: integer
+          description: Set the page size for pagination.
+          example: 100
+          default: 2147483647
+        TenantIdentifier:
+          type: string
+          description: Filter the results by tenant.
+          format: uuid
+        TenantName:
+          type: string
+          description: Filter the results by tenant name.
+    GetEventsResponse:
+      type: object
+      properties:
+        Events:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetEventsResponse_Events'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetEventAreasRequest:
+      type: object
+      properties:
+        EventIdentifier:
+          type: string
+          description: Filter the results by event
+          format: uuid
+        StartDate:
+          type: string
+          description: Filter the results by event start date.
+          format: date-time
+        EndDate:
+          type: string
+          description: Filter the results by event end date.
+          format: date-time
+        PageNumber:
+          type: integer
+          description: Set the page number for pagination.
+          example: 1
+          default: 1
+        PageSize:
+          type: integer
+          description: Set the page size for pagination.
+          example: 100
+          default: 2147483647
+    GetEventAreasResponse:
+      type: object
+      properties:
+        EventAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetEventAreasResponse_EventAreas_1'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+    GetEventsResponse_Events:
+      type: object
+      properties:
+        Identifier:
+          type: string
+          format: uuid
+        EventName:
+          type: string
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        ExternalID:
+          type: string
+        TenantName:
+          type: string
+        TenantIdentifier:
+          type: string
+    GetEventAreasResponse_EventAreas:
+      type: object
+      properties:
+        Identifier:
+          type: string
+          format: uuid
+        AreaName:
+          type: string
+    GetEventAreasResponse_EventAreas_1:
+      type: object
+      properties:
+        Identifier:
+          type: string
+          format: uuid
+        EventName:
+          type: string
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        EventAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetEventAreasResponse_EventAreas'
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
