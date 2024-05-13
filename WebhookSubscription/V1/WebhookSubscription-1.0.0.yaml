@@ -1,0 +1,411 @@
+---
+openapi: 3.0.0
+info:
+  title: Webhook Subscription Management
+  description: API for managing webhook subscriptions
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/webhookSubscription:
+    get:
+      tags:
+      - api/webhookSubscription
+      summary: List all webhook subscriptions
+      description: Retrieve a list of all available webhook subscriptions.
+      responses:
+        "200":
+          description: List of active webhook subscriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListWebhookSubscriptionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    post:
+      tags:
+      - api/webhookSubscription
+      summary: Create a new webhook subscription
+      description: "Create a new webhook subscription and generate a new signature key, if one does not already exist."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostWebhookSubscriptionRequest'
+        required: true
+      responses:
+        "201":
+          description: Webhook subscription created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostWebhookSubscriptionResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/webhookSubscription/{subscriptionId}:
+    get:
+      tags:
+      - api/webhookSubscription
+      summary: Get a specific webhook subscription
+      description: Retrieve details of a specific webhook subscription by its Id.
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Unique identifier relating to a specific subscription
+          format: uuid
+      responses:
+        "200":
+          description: Details of the webhook subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWebhookSubscriptionResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    delete:
+      tags:
+      - api/webhookSubscription
+      summary: Cancel a webhook subscription
+      description: Cancel an existing webhook subscription by providing its Id.
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Unique identifier relating to a specific subscription
+          format: uuid
+      responses:
+        "200":
+          description: Subscription successfully cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscriptionIdResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    patch:
+      tags:
+      - api/webhookSubscription
+      summary: Update a webhook subscription
+      description: Update an existing webhook subscription by providing its Id.
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Unique identifier relating to a specific subscription
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchWebhookSubscriptionRequest'
+        required: true
+      responses:
+        "200":
+          description: Webhook subscription URL updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscriptionIdResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/webhookSubscription/events:
+    get:
+      tags:
+      - api/webhookSubscription
+      summary: List subscription events
+      description: Retrieve a list of subscription events available to your user.
+      responses:
+        "200":
+          description: List of available subscription events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventsResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/webhookSubscription/signatureKey:
+    get:
+      tags:
+      - api/webhookSubscription
+      summary: Generate a new signature key
+      description: Generates a new signature key for the user and returns their public key as a base64 string.
+      responses:
+        "200":
+          description: Details of the new signature key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSignatureKeyResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/webhookSubscription/triggerSampleEventNotification:
+    post:
+      tags:
+      - api/webhookSubscription
+      summary: Trigger a sample event notification
+      description: "Trigger a sample event notification to your chosen url, using generated test data."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerSampleEventNotificationRequest'
+        required: true
+      responses:
+        "200":
+          description: Returns a 200 success if the event has been successfully queued in the notification service.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    PostWebhookSubscriptionRequest:
+      required:
+      - NotificationEvent
+      - NotificationUrl
+      type: object
+      properties:
+        NotificationUrl:
+          type: string
+          description: URL where notifications will be sent
+          format: uri
+        NotificationEvent:
+          type: string
+          description: The subscription event to subscribe to
+        TenantId:
+          type: string
+          description: Unique identifier of the tenant to specify the subscription
+          format: uuid
+        Status:
+          type: boolean
+          description: The status of the subscription | Default = True
+          default: true
+    PatchWebhookSubscriptionRequest:
+      type: object
+      properties:
+        NotificationUrl:
+          type: string
+          description: New URL where notifications will be sent
+          format: uri
+        NotificationEvent:
+          type: string
+          description: The subscribed event
+        TenantId:
+          type: string
+          description: Unique identifier of the subscribed tenant
+          format: uuid
+        Status:
+          type: boolean
+          description: Toggle the status of the subscription
+    TriggerSampleEventNotificationRequest:
+      type: object
+      properties:
+        NotificationUrl:
+          type: string
+          description: New URL where notifications will be sent
+          format: uri
+        NotificationEvent:
+          type: string
+          description: The subscribed event
+    GetWebhookSubscriptionResponse:
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+      - $ref: '#/components/schemas/WebhookSubscription'
+    ListWebhookSubscriptionResponse:
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+      - type: object
+        properties:
+          WebhookSubscriptions:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+    PostWebhookSubscriptionResponse:
+      type: object
+      properties:
+        SubscriptionId:
+          type: string
+          description: Unique identifier for the subscription
+          format: uuid
+        SignatureKey:
+          type: string
+          description: Your public key for validating request signatures
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    WebhookSubscriptionIdResponse:
+      type: object
+      properties:
+        SubscriptionId:
+          type: string
+          description: Unique identifier for the subscription
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetSignatureKeyResponse:
+      type: object
+      properties:
+        SignatureKey:
+          type: string
+          description: New signature key used to sign webhook notifications
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetEventsResponse:
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+      - type: object
+        properties:
+          NotificationEvents:
+            type: array
+            items:
+              $ref: '#/components/schemas/NotificationEvent'
+    WebhookSubscription:
+      type: object
+      properties:
+        SubscriptionId:
+          type: string
+          description: Unique identifier for the subscription
+          format: uuid
+        NotificationUrl:
+          type: string
+          description: URL where notifications will be sent
+          format: uri
+        NotificationEvent:
+          type: string
+          description: The event subscribed to
+        TenantId:
+          type: string
+          description: Unique identifier of the subscribed tenant
+          format: uuid
+          nullable: true
+        TenantName:
+          type: string
+          description: Name of the tenant
+          nullable: true
+        SignatureKey:
+          type: string
+          description: Key used for message signing
+        CreatedDate:
+          type: string
+          description: Date and time when the subscription was created
+          format: date-time
+        Status:
+          type: boolean
+          description: Indicates the status of the subscription
+    NotificationEvent:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: Name of the event
+        Description:
+          type: string
+          description: Description of the event
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        description: Unique identifier relating to a specific subscription
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

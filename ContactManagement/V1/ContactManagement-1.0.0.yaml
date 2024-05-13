@@ -1,0 +1,507 @@
+---
+openapi: 3.0.0
+info:
+  title: Contact Management
+  description: API suite for managing contacts
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/contactManagement/insertContact:
+    post:
+      tags:
+      - api/contactManagement
+      summary: Insert a new contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertContactRequest'
+        required: true
+      responses:
+        "200":
+          description: Contact inserted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertContactResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/contactManagement/updateContact:
+    post:
+      tags:
+      - api/contactManagement
+      summary: Update an existing contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactRequest'
+        required: true
+      responses:
+        "200":
+          description: Contact updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateContactResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/contactManagement/registerContact:
+    post:
+      tags:
+      - api/contactManagement
+      summary: Register an existing contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterContactRequest'
+        required: true
+      responses:
+        "200":
+          description: Contact registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterContactResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/contactManagement/updateRegistration:
+    post:
+      tags:
+      - api/contactManagement
+      summary: Update an existing registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRegistrationRequest'
+        required: true
+      responses:
+        "200":
+          description: Registration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateRegistrationResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/contactManagement/offboardContact:
+    post:
+      tags:
+      - api/contactManagement
+      summary: Offboard an existing contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffboardContactRequest'
+        required: true
+      responses:
+        "200":
+          description: Contact offboarded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffboardContactResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    InsertContactRequest:
+      required:
+      - AccreditInfo
+      - Dob
+      - ExternalId
+      - FirstName
+      - LastName
+      - Photo
+      type: object
+      properties:
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        FirstName:
+          maxLength: 255
+          type: string
+        LastName:
+          maxLength: 255
+          type: string
+        Dob:
+          type: string
+          format: date-time
+        JobTitle:
+          maxLength: 255
+          type: string
+        Organisation:
+          maxLength: 255
+          type: string
+          description: The organisation the person is working for
+        EmailAddress:
+          maxLength: 255
+          type: string
+          format: email
+        MobileCountryCode:
+          maxLength: 3
+          type: string
+          description: The ISO Alpha-3 code mapping reference for the country code
+        MobileNo:
+          maxLength: 60
+          type: string
+          pattern: "^[0-9]+$"
+        AgreeToTerms:
+          type: boolean
+        Photo:
+          $ref: '#/components/schemas/ContactPhotoRequestFields'
+        AccreditInfo:
+          $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
+    UpdateContactRequest:
+      required:
+      - AccreditInfo
+      - ContactIdentifier
+      - ExternalId
+      - FirstName
+      - LastName
+      - Photo
+      type: object
+      properties:
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        FirstName:
+          maxLength: 255
+          type: string
+        LastName:
+          maxLength: 255
+          type: string
+        Dob:
+          type: string
+          format: date-time
+        JobTitle:
+          maxLength: 255
+          type: string
+        Organisation:
+          maxLength: 255
+          type: string
+          description: The organisation the person is working for
+        EmailAddress:
+          maxLength: 255
+          type: string
+          format: email
+        MobileCountryCode:
+          maxLength: 3
+          type: string
+          description: The ISO Alpha-3 code mapping reference for the country code
+        MobileNo:
+          maxLength: 60
+          type: string
+          pattern: "^[0-9]+$"
+        AgreeToTerms:
+          type: boolean
+        Photo:
+          $ref: '#/components/schemas/ContactPhotoRequestFields'
+        AccreditInfo:
+          $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
+    RegisterContactRequest:
+      required:
+      - AccreditInfo
+      - ContactIdentifier
+      - ExternalId
+      - FirstName
+      - LastName
+      type: object
+      properties:
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          maxLength: 255
+          type: string
+          description: The identifier assigned in the Accredit System
+        FirstName:
+          maxLength: 255
+          type: string
+        LastName:
+          maxLength: 255
+          type: string
+        Organisation:
+          maxLength: 255
+          type: string
+          description: The organisation the person is working for
+        AccreditInfo:
+          $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
+    UpdateRegistrationRequest:
+      required:
+      - AccreditInfo
+      - ContactIdentifier
+      - ExternalId
+      - FirstName
+      - LastName
+      - RegistrationIdentifier
+      type: object
+      properties:
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        RegistrationIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+        FirstName:
+          maxLength: 255
+          type: string
+        LastName:
+          maxLength: 255
+          type: string
+        AccreditInfo:
+          $ref: '#/components/schemas/RegistrationAccreditInfoRequestFields'
+    OffboardContactRequest:
+      required:
+      - ContactIdentifier
+      - ExternalId
+      - FirstName
+      - LastName
+      type: object
+      properties:
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        FirstName:
+          maxLength: 255
+          type: string
+        LastName:
+          maxLength: 255
+          type: string
+    ContactAccreditInfoRequestFields:
+      required:
+      - EventIdentifier
+      - OrganisationIdentifier
+      - RoleIdentifier
+      type: object
+      properties:
+        OrganisationIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+        RoleIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+        EventIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+    ContactPhotoRequestFields:
+      type: object
+      properties:
+        ImageBase64String:
+          type: string
+          format: byte
+          example: base64-encoded-string
+          description: 4MB limit on actual decrypted file size - Photos must be cropped to the specifications of the project 
+        PhotoStatus:
+          maxLength: 255
+          type: string
+          description: The reference of the Status from the Photo Check - If not using Photo Check, please ignore or specify null
+        PhotoPersonReference:
+          maxLength: 255
+          type: string
+          description: The reference number for the person's photo validation - If not using Photo Check, please ignore or specify null
+    RegistrationAccreditInfoRequestFields:
+      required:
+      - RegistrationStatusId
+      type: object
+      properties:
+        RegistrationStatusId:
+          maxLength: 255
+          type: string
+        BadgeAccessIdentifiers:
+          type: array
+          items:
+            maxLength: 255
+            type: string
+            format: uuid
+
+    InsertContactResponse:
+      type: object
+      properties:
+        ExternalId:
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        RegistrationIdentifier:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    UpdateContactResponse:
+      type: object
+      properties:
+        ExternalId:
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    RegisterContactResponse:
+      type: object
+      properties:
+        ExternalId:
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        EventRegistrationIdentifier:
+          type: string
+          format: uuid
+        PassRegistrationIdentifier:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    UpdateRegistrationResponse:
+      type: object
+      properties:
+        ExternalId:
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+        RegistrationIdentifier:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    OffboardContactResponse:
+      type: object
+      properties:
+        ExternalId:
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The identifier assigned in the Accredit System
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+    inline_response_400:
+      properties:
+        ExternalId:
+          type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseResponseWithErrors'
+
+  responses:
+    BadRequestWithExternalId:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_400'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

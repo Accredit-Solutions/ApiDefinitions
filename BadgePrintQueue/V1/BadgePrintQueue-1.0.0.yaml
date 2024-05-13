@@ -1,0 +1,421 @@
+---
+openapi: 3.0.0
+info:
+  title: Badge Print Queue
+  description: API for managing badge print queue for third-party printers
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/printQueue/listBadgeExportZipFiles:
+    post:
+      tags:
+      - api/printQueue
+      summary: List all badge export zip files
+      description: |
+        Retrieve the details of all Badge Export Zip Files available to your user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListBadgeExportZipFilesRequest'
+      responses:
+        "200":
+          description: List of badge export zip files
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBadgeExportZipFilesResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/printQueue/downloadBadgeExportFile/{badgeZipFileId}:
+    get:
+      tags:
+      - api/printQueue
+      summary: Get badge export zip file
+      description: |
+        Download a badge export zip file using its id.
+      parameters:
+      - name: badgeZipFileId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Badge export zip file
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/printQueue/getBadgeExportMetadata/{badgeZipFileId}:
+    get:
+      tags:
+      - api/printQueue
+      summary: Get badge export metadata
+      description: |
+        Fetch the metadata for all badge exports, using the zip file Id. 
+      parameters:
+      - name: badgeZipFileId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Badge export metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeExportMetadataResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/printQueue/updateStatus/{badgeZipFileId}:
+    patch:
+      tags:
+      - api/printQueue
+      summary: Update badge export print status
+      description: |
+        Set the status and job id of a badge export zip file, using its Id.
+      parameters:
+      - name: badgeZipFileId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateStatusResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    ListBadgeExportZipFilesRequest:
+      type: object
+      properties:
+        EventId:
+          type: string
+          format: uuid
+          description: Filter results by event.
+        BadgeExportId:
+          type: string
+          format: uuid
+          description: Filter results by badge export.
+        BadgeZipFileId:
+          type: string
+          format: uuid
+          description: Filter results by badge zip file.
+        TenantId:
+          type: string
+          format: uuid
+          description: Filter results by tenant.
+        ExternalTenantId:
+          type: string
+          description: Filter results by tenant, using its external Id.
+        DownloadPending:
+          type: boolean
+          description: Filter results by their download pending status.
+    ListBadgeExportZipFilesResponse:
+      type: object
+      properties:
+        BadgeExportZipFiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListBadgeExportZipFilesResponse_BadgeExportZipFiles'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    BadgeExportMetadataResponse:
+      type: object
+      properties:
+        FileName:
+          type: string
+        FileSize:
+          type: string
+        Checksum:
+          type: string
+        TenantId:
+          type: string
+          format: uuid
+        ExternalTenantId:
+          type: string
+        BadgeExports:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeExportMetadataResponse_BadgeExports'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    UpdateStatusRequest:
+      type: object
+      properties:
+        PrintStatus:
+          type: string
+          description: Set the status of the print job.
+          enum: 
+            - Pending
+            - Downloaded
+            - Printed
+        PrintJobId:
+          type: string
+          description: Set the external Id of the print job.
+    UpdateStatusResponse:
+      type: object
+      properties:
+        BadgeZipFileId:
+          type: string
+          format: uuid
+        PrintStatus:
+          type: string
+        ExternalId:
+          type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+    ListBadgeExportZipFilesResponse_BadgeExportZipFiles:
+      type: object
+      properties:
+        BadgeZipFileId:
+          type: string
+          format: uuid
+        BadgeExportFileName:
+          type: string
+        DownloadStatus:
+          type: string
+        TenantId:
+          type: string
+          format: uuid
+        CreatedDate:
+          type: string
+          format: date-time
+        DownloadedDateTime:
+          type: string
+          format: date-time
+        PrintedDateTime:
+          type: string
+          format: date-time
+        BadgeExportIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    BadgeExportMetadataResponse_AccessZones:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        Code:
+          type: string
+    BadgeExportMetadataResponse_BadgeMetadata:
+      type: object
+      properties:
+        BadgeId:
+          type: string
+          format: uuid
+        RegistrationId:
+          type: string
+          format: uuid
+        PhotoUrl:
+          type: string
+          format: uri
+        ContactId:
+          type: string
+          format: uuid
+        RegistrationSubTypeId:
+          type: string
+          format: uuid
+        RegistrationSubTypeName:
+          type: string
+        PublicDescription:
+          type: string
+        PassStartDate:
+          type: string
+          format: date-time
+        PassEndDate:
+          type: string
+          format: date-time
+        RegistrationTypeId:
+          type: string
+          format: uuid
+        RegistrationTypeName:
+          type: string
+        EventAccountTypeName:
+          type: string
+        ResponsibleOrganisation:
+          type: string
+        AffiliatedOrganisation:
+          type: string
+        Forename:
+          type: string
+        Surname:
+          type: string
+        TitleOther:
+          type: string
+        BadgeTemplateId:
+          type: string
+          format: uuid
+        BadgeTemplateName:
+          type: string
+        PassIssueNumber:
+          type: integer
+        EventBadgeId:
+          type: string
+          format: uuid
+        Barcode:
+          type: string
+        PassPrintedDate:
+          type: string
+          format: date-time
+        FullName:
+          type: string
+        JobTitle:
+          type: string
+        NationalityId:
+          type: string
+          format: uuid
+        Nationality:
+          type: string
+        EventAccountId:
+          type: string
+          format: uuid
+        EventName:
+          type: string
+        EventDate:
+          type: string
+        EventStartDate:
+          type: string
+          format: date-time
+        EventEndDate:
+          type: string
+          format: date-time
+        BadgesInEnvelope:
+          type: string
+        BadgeCount:
+          type: integer
+        ServiceNo:
+          type: string
+        BadgeName:
+          type: string
+        OrganisationLogo:
+          type: string
+          format: uri
+        NameOnPass:
+          type: string
+        AccessZones:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeExportMetadataResponse_AccessZones'
+    BadgeExportMetadataResponse_BadgeExports:
+      type: object
+      properties:
+        BadgeExportId:
+          type: string
+          format: uuid
+        BadgeMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeExportMetadataResponse_BadgeMetadata'
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  parameters:
+    BadgeZipFileId:
+      name: badgeZipFileId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

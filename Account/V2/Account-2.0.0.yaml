@@ -1,0 +1,325 @@
+---
+openapi: 3.0.0
+info:
+  title: Account Management
+  description: "## Accredit API for managing user accounts\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 2.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/V2.0/account:
+    get:
+      tags:
+      - api/account
+      summary: List all accounts
+      description: Retrieve a list of all available accounts.
+      parameters:
+      - name: lastUpdated
+        description: Filter results by their Last Updated date.
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: tenantIds
+        description: Filter results by Tenant.
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAccountsResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    post:
+      tags:
+      - api/account
+      summary: Create a new account
+      description: Insert an account in the Accredit system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostAccountResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/V2.0/account/{accountId}:
+    get:
+      tags:
+      - api/account
+      summary: Get an existing account
+      description: Retrieve details of a specific account by its Id.
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    patch:
+      tags:
+      - api/account
+      summary: Update an account
+      description: Update an existing account by providing its Id.
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchAccountResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    PostAccountRequest:
+      required:
+      - Email
+      - Username
+      - Forename
+      - Surname
+      - RoleId
+      type: object
+      properties:
+        Email:
+          type: string
+          format: email
+          description: Sets the email address of the account. Must be a valid email address.
+        Username:
+          type: string
+          description: Sets the username of the account.
+        Forename:
+          type: string
+          description: Sets the forename of the account.
+        Surname:
+          type: string
+          description: Sets the surname of the account.
+        RoleId:
+          type: string
+          format: uuid
+          description: Sets the account role. To be shared by Accredit for specific client instance.
+        PhoneCode:
+          type: string
+          description: Sets the phone code of the account.
+          example: '+44'
+        PhoneNumber:
+          pattern: "^(\\+)?([0-9]){2,14}$"
+          type: string
+          format: phone-number
+          description: Sets the phone number of the account. 
+    PatchAccountRequest:
+      type: object
+      properties:
+        Email:
+          type: string
+          format: email
+          description: Sets the email address of the account.
+        Username:
+          type: string
+          description: Sets the username of the account.
+        Forename:
+          type: string
+          description: Sets the forename of the account.
+        Surname:
+          type: string
+          description: Sets the surname of the account.
+        RoleId:
+          type: string
+          format: uuid
+          description: Sets the account role. To be shared by Accredit for specific client instance.
+        PhoneCode:
+          type: string
+          description: Sets the phone code of the account.
+          example: '+44'
+        PhoneNumber:
+          pattern: "^(\\+)?([0-9]){2,14}$"
+          type: string
+          format: phone-number
+          description: Sets the phone number of the account. 
+    AccountResponse:
+      type: object
+      properties:
+        AccountId:
+          type: string
+          format: uuid
+        Email:
+          type: string
+          format: email
+        Username:
+          type: string
+        Forename:
+          type: string
+        Surname:
+          type: string
+        CreateDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        RoleData:
+          type: object
+          properties:
+            RoleName:
+              type: string
+            RoleId:
+              type: string
+              format: uuid
+        TenantIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    GetAccountResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+      - $ref: '#/components/schemas/AccountResponse'
+    ListAccountsResponse:
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+      - type: object
+        properties:
+          Accounts:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountResponse'
+    PostAccountResponse:
+      type: object
+      properties:
+        AccountId:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    PatchAccountResponse:
+      type: object
+      properties:
+        AccountId:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  parameters:
+    AccountId:
+      name: accountId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: Auth
+  description: |
+    Our token endpoint provides user authentication, allowing clients to obtain access tokens by providing their credentials.
+
+    If you do not have an account available to you, please speak to your point of contact at Accredit to request access.
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+paths:
+  /token:
+    post:
+      tags:
+      - /token
+      summary: Generate access token
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  description: |
+                    The type of grant being requested.
+                    For API user auth, specify `password`.
+                  example: password
+                username:
+                  type: string
+                  description: Enter your API user's username.
+                  example: user123
+                password:
+                  type: string
+                  description: Enter your API user's password.
+                  example: secretpassword
+                lifecycle:
+                  type: integer
+                  description: The duration in seconds for which the token is valid.
+                  minimum: 1
+                  maximum: 86400
+                  default: 1200
+      responses:
+        "200":
+          description: Token successfully obtained.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: "Your token, granting user authentication."
+        token_type:
+          type: string
+          description: The type of token.
+          example: bearer
+        expires_in:
+          type: integer
+          description: The duration in seconds for which the token is valid.
+          example: 1200
+        userName:
+          type: string
+          description: The username / account associated with the token.
+          example: test-user
+        ".issued":
+          type: string
+          description: The date and time when the token was issued.
+          example: "Thu, 29 Feb 2022 16:40:56 GMT"
+        ".expires":
+          type: string
+          description: The date and time when the token expires.
+          example: "Thu, 14 Mar 2022 16:40:56 GMT"
+    inline_response_400:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code.
+          example: invalid_grant
+        error_description:
+          type: string
+          description: Description of the error.
+          example: The user name or password is incorrect.
