@@ -218,6 +218,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GetEventAreasResponse_EventAreas'
+            
   responses:
     BadRequest:
       description: Bad Request
