@@ -20,4 +20,4 @@ jobs:
       - name: Run `openapi` command 🚀
         uses: readmeio/rdme@v8
         with:
-          rdme: openapi Event\V2\Event-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f1367a857d005ad25aa0
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Event/V2/Event-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f1367a857d005ad25aa0
