@@ -25,7 +25,7 @@ paths:
         required: true
       responses:
         "200":
-          description: List of events data
+          description: List of event data
           content:
             application/json:
               schema:
