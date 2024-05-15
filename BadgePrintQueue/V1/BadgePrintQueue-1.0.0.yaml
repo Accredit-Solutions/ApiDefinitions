@@ -260,9 +260,6 @@ components:
           type: string
         DownloadStatus:
           type: string
-        TenantId:
-          type: string
-          format: uuid
         CreatedDate:
           type: string
           format: date-time
@@ -277,6 +274,16 @@ components:
           items:
             type: string
             format: uuid
+        Tenant:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+            ExternalId:
+              type: string
     BadgeExportMetadataResponse_AccessZones:
       type: object
       properties:
