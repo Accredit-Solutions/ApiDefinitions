@@ -145,11 +145,7 @@ components:
     InsertContactRequest:
       required:
       - AccreditInfo
-      - Dob
       - ExternalId
-      - FirstName
-      - LastName
-      - Photo
       type: object
       properties:
         ExternalId:
@@ -186,18 +182,15 @@ components:
           pattern: "^[0-9]+$"
         AgreeToTerms:
           type: boolean
+          description: When set to mandatory, this will require agree to terms to be true for a successfull request
         Photo:
           $ref: '#/components/schemas/ContactPhotoRequestFields'
         AccreditInfo:
           $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
     UpdateContactRequest:
       required:
-      - AccreditInfo
       - ContactIdentifier
       - ExternalId
-      - FirstName
-      - LastName
-      - Photo
       type: object
       properties:
         ExternalId:
@@ -239,17 +232,16 @@ components:
           pattern: "^[0-9]+$"
         AgreeToTerms:
           type: boolean
+          description: When set to mandatory, this will require agree to terms to be true for a successfull request
         Photo:
           $ref: '#/components/schemas/ContactPhotoRequestFields'
         AccreditInfo:
-          $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
+          $ref: '#/components/schemas/UpdateContactAccreditInfoRequestFields'
     RegisterContactRequest:
       required:
       - AccreditInfo
       - ContactIdentifier
       - ExternalId
-      - FirstName
-      - LastName
       type: object
       properties:
         ExternalId:
@@ -263,22 +255,20 @@ components:
         FirstName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
         LastName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
         Organisation:
           maxLength: 255
           type: string
-          description: The organisation the person is working for
+          description: This field has no functional effect, but can be included for additional information within logs
         AccreditInfo:
           $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
     UpdateRegistrationRequest:
       required:
-      - AccreditInfo
-      - ContactIdentifier
       - ExternalId
-      - FirstName
-      - LastName
       - RegistrationIdentifier
       type: object
       properties:
@@ -290,7 +280,7 @@ components:
           maxLength: 255
           type: string
           format: uuid
-          description: The identifier assigned in the Accredit System
+          description: Can be included to verify the registration is linked to the provided contact
         RegistrationIdentifier:
           maxLength: 255
           type: string
@@ -298,17 +288,17 @@ components:
         FirstName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
         LastName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
         AccreditInfo:
           $ref: '#/components/schemas/RegistrationAccreditInfoRequestFields'
     OffboardContactRequest:
       required:
       - ContactIdentifier
       - ExternalId
-      - FirstName
-      - LastName
       type: object
       properties:
         ExternalId:
@@ -323,14 +313,34 @@ components:
         FirstName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
         LastName:
           maxLength: 255
           type: string
+          description: This field has no functional effect, but can be included for additional information within logs
     ContactAccreditInfoRequestFields:
       required:
       - EventIdentifier
       - OrganisationIdentifier
       - RoleIdentifier
+      type: object
+      properties:
+        OrganisationIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+        RoleIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+        EventIdentifier:
+          maxLength: 255
+          type: string
+          format: uuid
+          description: Populate the default Identifier as provided by the Account Management Team
+    UpdateContactAccreditInfoRequestFields:
       type: object
       properties:
         OrganisationIdentifier:
@@ -365,8 +375,6 @@ components:
           type: string
           description: The reference number for the person's photo validation - If not using Photo Check, please ignore or specify null
     RegistrationAccreditInfoRequestFields:
-      required:
-      - RegistrationStatusId
       type: object
       properties:
         RegistrationStatusId:
