@@ -144,6 +144,8 @@ components:
   schemas:
     InsertContactRequest:
       required:
+      - FirstName
+      - LastName
       - AccreditInfo
       - ExternalId
       type: object
