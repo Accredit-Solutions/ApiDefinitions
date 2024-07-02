@@ -147,7 +147,6 @@ components:
       - FirstName
       - LastName
       - AccreditInfo
-      - ExternalId
       type: object
       properties:
         ExternalId:
@@ -192,18 +191,17 @@ components:
     UpdateContactRequest:
       required:
       - ContactIdentifier
-      - ExternalId
       type: object
       properties:
-        ExternalId:
-          maxLength: 14
-          type: string
-          description: The unique identifier of the person checked in the 3rd party platform
         ContactIdentifier:
           maxLength: 255
           type: string
           format: uuid
           description: The identifier assigned in the Accredit System
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
         FirstName:
           maxLength: 255
           type: string
@@ -243,17 +241,16 @@ components:
       required:
       - AccreditInfo
       - ContactIdentifier
-      - ExternalId
       type: object
       properties:
-        ExternalId:
-          maxLength: 14
-          type: string
-          description: The unique identifier of the person checked in the 3rd party platform
         ContactIdentifier:
           maxLength: 255
           type: string
           description: The identifier assigned in the Accredit System
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
         FirstName:
           maxLength: 255
           type: string
@@ -270,19 +267,18 @@ components:
           $ref: '#/components/schemas/ContactAccreditInfoRequestFields'
     UpdateRegistrationRequest:
       required:
-      - ExternalId
       - RegistrationIdentifier
       type: object
       properties:
-        ExternalId:
-          maxLength: 14
-          type: string
-          description: The unique identifier of the person checked in the 3rd party platform
         ContactIdentifier:
           maxLength: 255
           type: string
           format: uuid
           description: Can be included to verify the registration is linked to the provided contact
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
         RegistrationIdentifier:
           maxLength: 255
           type: string
@@ -300,18 +296,17 @@ components:
     OffboardContactRequest:
       required:
       - ContactIdentifier
-      - ExternalId
       type: object
       properties:
-        ExternalId:
-          maxLength: 14
-          type: string
-          description: The unique identifier of the person checked in the 3rd party platform
         ContactIdentifier:
           maxLength: 255
           type: string
           format: uuid
           description: The identifier assigned in the Accredit System
+        ExternalId:
+          maxLength: 14
+          type: string
+          description: The unique identifier of the person checked in the 3rd party platform
         FirstName:
           maxLength: 255
           type: string
