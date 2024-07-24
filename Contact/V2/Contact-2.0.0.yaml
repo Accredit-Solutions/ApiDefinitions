@@ -1,8 +1,8 @@
 ---
 openapi: 3.0.0
 info:
-  title: Contact Report Data
-  description: "## Accredit API for retrieving contact data\n\nAn assigned user report is required for use of this API. The response is dynamic and reflects the configuration of the report.\n\nAll request fields are optional filters.\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  title: Contact Data
+  description: "## Accredit API for retrieving contact data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
   version: 2.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
@@ -10,6 +10,57 @@ servers:
 security:
 - bearerAuth: []
 paths:
+  /api/contact:
+    get:
+      tags:
+      - api/contact
+      summary: List available contacts
+      description: |
+        List all contacts available to the current user, including registration details.
+      parameters:
+      - name: EventId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: Filter results by event.
+      - name: Email
+        in: query
+        required: false
+        schema:
+          type: string
+          format: email
+        description: Filter results by email address.
+      - name: ContactLastUpdated
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter results by the last time contact was updated.
+      - name: RegistrationLastUpdated
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter results by the last time registration was updated.
+      responses:
+        "200":
+          description: Contact details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactsResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
   /api/v2.0/contact/getData:
     post:
       tags:
@@ -44,6 +95,83 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
 components:
   schemas:
+    GetContactsResponse:
+      type: object
+      properties:
+        Contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    ContactDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        ExternalId:
+          type: string
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+          format: email
+        MobileCode:
+          type: string
+          example: "+44"
+        MobileNumber:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        AffiliatedOrganisation:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        Registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationDetails'
+    RegistrationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        Status:
+          $ref: '#/components/schemas/RegistrationStatusDetails'
+        Role:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        Event:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        ResponsibleOrganisation:
+          $ref: '#/components/schemas/GenericEntityDetails'
+    RegistrationStatusDetails:
+      type: object
+      properties:
+        Code:
+          type: integer
+          example: 1
+        Name:
+          type: string
+    GenericEntityDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
     GetDataResponse:
       type: object
       properties:

@@ -6,11 +6,25 @@ info:
   version: 1.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
   /api/organisation:
+    get:
+      tags:
+      - api/organisation
+      summary: List available organisations
+      description: |
+        List all organisations available to the current user.
+      responses:
+        "200":
+          description: Organisation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganisationsResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
     post:
       tags:
       - api/organisation
@@ -42,7 +56,7 @@ paths:
     get:
       tags:
       - api/organisation
-      summary: Get an existing organisation
+      summary: Get an existing organisations
       description: |
         Fetch the details of an existing organisation by its Id.
       parameters:
@@ -105,6 +119,59 @@ paths:
                 $ref: '#/components/schemas/BaseResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
+  /api/organisation/{organisationId}/allocation:
+    get:
+      tags:
+      - api/organisation
+      summary: Get organisation allocations
+      description: |
+        Fetch the available event / role allocations of an organisation by its Id.
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: EventId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: Filter allocations by event.
+      - name: EventFrom
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter allocations to show only event with a StartDate FROM this date.
+      - name: EventTo
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter allocations to show only event with a StartDate BEFORE this date.
+      responses:
+        "200":
+          description: Organisation Allocation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganisationAllocationResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+
 components:
   schemas:
     OrganisationRequest:
@@ -152,6 +219,23 @@ components:
           format: uuid
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
+    ListOrganisationsResponse:
+      type: object
+      properties:
+        Organisations:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationInfo'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    OrganisationInfo:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
     OrganisationGetResponse:
       type: object
       properties:
@@ -178,6 +262,67 @@ components:
             $ref: '#/components/schemas/OrganisationGetResponse_Questions'
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
+    OrganisationAllocationGetResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+        OrganisationName:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        OrganisationStatus:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        OrganisationType:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        KeyAccountManager:
+          $ref: '#/components/schemas/OrganisationGetResponse_KeyAccountManager'
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationGetResponse_Questions'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetOrganisationAllocationResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+        OrganisationName:
+          type: string
+        Allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationEventInfo'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    AllocationEventInfo:
+      type: object
+      properties:
+        EventName:
+          type: string
+        EventId:
+          type: string
+          format: uuid
+        Roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationRoleInfo'
+    AllocationRoleInfo:
+      type: object
+      properties:
+        RoleName:
+          type: string
+        RoleId:
+          type: string
+          format: uuid
+
     BaseResponseWithErrors:
       properties:
         HttpStatusCode:
@@ -211,6 +356,7 @@ components:
           type: integer
           description: The HTTPStatusCode of the response
           example: 200
+
     OrganisationGetResponse_OrganisationStatus:
       type: object
       properties:
