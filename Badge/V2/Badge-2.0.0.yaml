@@ -149,6 +149,30 @@ paths:
                 $ref: '#/components/schemas/inline_response_400'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
+  /api/badge/getBadges:
+    post:
+      tags:
+      - api/badge
+      summary: List badges by event
+      description: |
+        Retrieve information about badges assigned to an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetBadgesRequest'
+        required: true
+      responses:
+        "200":
+          description: Badge validation details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetBadgesResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
 components:
   schemas:
     GetAreasResponse:
@@ -294,6 +318,81 @@ components:
             $ref: '#/components/schemas/BadgeValidationResultsPaginatedResponse_Data'
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
+    GetBadgesRequest:
+      type: object
+      properties:
+        EventIdentifier:
+          type: string
+          format: uuid
+          description: The unique identifier for the event.
+        PageNumber:
+          type: integer
+          description: Set the page number for pagination.
+        PageSize:
+          type: integer
+          description: Set the page size for pagination.
+        LastUpdated:
+          type: string
+          format: date-time
+          description: Filter results by their Last Updated date.
+      required:
+        - EventIdentifier
+    GetBadgesResponse:
+      type: object
+      properties:
+        Identifier:
+          type: string
+          format: uuid
+          description: The unique identifier for the badge
+        Barcode:
+          type: string
+          description: The barcode of the badge
+        BadgeAccesses:
+          type: array
+          items:
+            type: string
+          description: List of badge access permissions
+        Title:
+          type: string
+          description: The title of the badge holder
+        FirstName:
+          type: string
+          description: The first name of the badge holder
+        LastName:
+          type: string
+          description: The last name of the badge holder
+        Company:
+          type: string
+          description: The company associated with the badge holder
+        Active:
+          type: boolean
+          description: Indicates if the badge is active
+        LastUpdated:
+          type: string
+          format: date-time
+          description: The last updated timestamp of the badge
+        ContactId:
+          type: integer
+          example: 100
+          description: The numeric contact id associated with the badge holder
+        PhotoUrl:
+          type: string
+          description: The URL of the badge holder's photo
+        PhotoFileName:
+          type: string
+          description: The file name of the badge holder's photo
+        RfIdCode:
+          type: string
+          description: The RFID code associated with the badge
+        ResponsibleOrganisationName:
+          type: string
+          description: The name of the responsible organization
+        ResponsibleOrganisationIdentifier:
+          type: string
+          description: The identifier of the responsible organization
+        RegistrationSubTypeName:
+          type: string
+          description: The registration subtype name
     BaseResponseWithErrors:
       properties:
         HttpStatusCode:
