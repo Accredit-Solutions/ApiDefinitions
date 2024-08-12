@@ -375,6 +375,10 @@ components:
           type: integer
           example: 100
           description: The numeric contact id associated with the badge holder
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The unique contact id associated with the badge holder
         PhotoUrl:
           type: string
           description: The URL of the badge holder's photo
