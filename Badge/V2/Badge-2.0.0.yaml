@@ -72,7 +72,6 @@ paths:
         in: query
         required: false
         style: form
-        explode: true
         schema:
           type: string
           format: uuid
@@ -81,7 +80,6 @@ paths:
         in: query
         required: false
         style: form
-        explode: true
         schema:
           type: integer
           format: int32
@@ -92,7 +90,6 @@ paths:
         in: query
         required: false
         style: form
-        explode: true
         schema:
           type: integer
           format: int32
@@ -103,7 +100,6 @@ paths:
         in: query
         required: false
         style: form
-        explode: true
         schema:
           type: string
           format: date-time
