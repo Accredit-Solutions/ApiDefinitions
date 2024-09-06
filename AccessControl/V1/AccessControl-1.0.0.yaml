@@ -75,7 +75,7 @@ paths:
         style: form
         schema:
           type: integer
-      - name: DateFrom
+      - name: dateFrom
         description: Filter results by their scan datetime.
         in: query
         required: false
@@ -83,7 +83,7 @@ paths:
         schema:
           type: string
           format: date-time
-      - name: DateTo
+      - name: dateTo
         description: Filter results by their scan datetime.
         in: query
         required: false
