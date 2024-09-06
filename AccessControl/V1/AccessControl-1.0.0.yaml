@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.0
 info:
-  title: Access Control data
+  title: Access Control Report Data
   description: "## Accredit API for retrieving access control data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
   version: 1.0.0
 servers:
@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/accessControl:
+  /api/accessControl/report:
     get:
       tags:
-      - api/accessControl/report
+      - api/accessControl
       summary: Get access control report
       description: |
         Query access control report data available to the current user.
