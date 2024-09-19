@@ -1,0 +1,185 @@
+---
+openapi: 3.0.0
+info:
+  title: Registration Data
+  description: "## Accredit API for retrieving registration data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+security:
+- bearerAuth: []
+paths:
+  /api/registration/{registrationId}:
+    get:
+      tags:
+      - api/registration/{registrationId}
+      summary: Get access control report
+      description: |
+        Query access control report data available to the current user.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        style: simple
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Access control report details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+
+components:
+  schemas:
+    GetRegistrationResponse:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        RegistrationNumber:
+          type: integer
+          example: 100
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+        Event:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        RegistrationStatus:
+          type: object
+          properties:
+            Initials:
+              type: string
+            Name:
+              type: string
+            ExternalId:
+              type: string
+        RegistrationSubType:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        ResponsibleOrganisation:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        Contact:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            FirstName:
+              type: string
+            LastName:
+              type: string
+            ContactImage:
+              $ref: '#/components/schemas/GenericEntityDetails'
+        BadgeAccess:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: string
+                format: uuid
+              Name:
+                type: string
+              Code:
+                type: string
+              Description:
+                type: string
+        Badges:
+          type: array
+          items:
+            type: object
+            properties:
+              Barcode:
+                type: string
+              RfidCode:
+                type: string
+              PassStatus:
+                type: object
+                properties:
+                  Initials:
+                    type: string
+                  Name:
+                    type: string
+              LastUpdated:
+                type: string
+                format: date-time
+              CreatedDate:
+                type: string
+                format: date-time
+              PrintedDate:
+                type: string
+                format: date-time
+                nullable: true
+              Collected:
+                type: boolean
+              CollectedDate:
+                type: string
+                format: date-time
+                nullable: true
+              CollectedArea:
+                $ref: '#/components/schemas/GenericEntityDetails'
+
+    GenericEntityDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
