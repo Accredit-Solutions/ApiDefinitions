@@ -12,7 +12,7 @@ paths:
   /api/registration/{registrationId}:
     get:
       tags:
-      - api/registration/{registrationId}
+      - api/registration
       summary: Get registration details
       description: |
         Fetch detailed data about an existing registration.

@@ -71,3 +71,8 @@ jobs:
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/AccessControl/V1/AccessControl-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66db278998d439001a29e563
+
+      - name: Run `openapi` command 🚀
+        uses: readmeio/rdme@v8
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Registration/V1/Registration-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66ec487809450f003cb798c9
