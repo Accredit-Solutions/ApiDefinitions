@@ -35,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrganisationRequest'
+              $ref: '#/components/schemas/OrganisationPostRequest'
         required: true
       responses:
         "200":
@@ -102,7 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrganisationRequest'
+              $ref: '#/components/schemas/OrganisationPatchRequest'
         required: true
       responses:
         "200":
@@ -174,10 +174,44 @@ paths:
 
 components:
   schemas:
-    OrganisationRequest:
+    OrganisationPostRequest:
       required:
       - OrganisationName
       - OrganisationTypeId
+      type: object
+      properties:
+        OrganisationName:
+          maxLength: 255
+          description: Sets the organisation name.
+          type: string
+        OrganisationTypeId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation type. To be shared by Accredit for specific client instance.
+          format: uuid
+        OrganisationStatusId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation status. To be shared by Accredit for specific client instance.
+          format: uuid
+        CountryCode:
+          maxLength: 3
+          type: string
+          description: 3-digit courny code representing the country. Refer to the Country Code Mapping for reference.
+          example: GBR
+        AccountManagerId:
+          maxLength: 255
+          type: string
+          description: "Sets the Key Account Manager for the organisation. The Account Manager can be created/fetched via the Accredit Account API endpoint."
+          format: uuid
+        Tags:
+          maxLength: 255
+          type: array
+          description: Sets any tags to be included on the organisation. To be shared by Accredit for specific client instance.
+          items:
+            type: string
+            format: uuid
+    OrganisationPatchRequest:
       type: object
       properties:
         OrganisationName:
