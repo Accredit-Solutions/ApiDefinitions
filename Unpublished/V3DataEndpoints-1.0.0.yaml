@@ -1,0 +1,1088 @@
+---
+openapi: 3.0.0
+info:
+  title: V3.0 Data
+  description: "## V3.0 Reference Documentation\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 1.0.0
+servers:
+- url: https://tennisaustraliaclone-api-uat.accredit-solutions.com
+security:
+- bearerAuth: []
+paths:
+  # Contact
+  /api/v3.0/contact:
+    get:
+      tags:
+      - api/v3.0/contact
+      summary: List contact details
+      description: |
+        Fetch details data about all available contact.
+      parameters:
+      - name: emailAddress
+        description: Filter results by email address.
+        in: query
+        schema:
+          type: string
+          format: email
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListContactResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/contact/{contactId}:
+    get:
+      tags:
+      - api/v3.0/contact
+      summary: Get contact details
+      description: |
+        Fetch detailed data about an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # Registration
+  /api/v3.0/registration:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: List registration details
+      description: |
+        Fetch details data about all available registrations.
+      parameters:
+      - name: eventId
+        description: Filter results by event.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: registrationSubTypeId
+        description: Filter results by registrationSubType.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: contactId
+        description: Filter results by contact.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRegistrationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/registration/{registrationId}:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: Get registration details
+      description: |
+        Fetch detailed data about an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # BadgeAccess
+  /api/v3.0/badgeAccess:
+    get:
+      tags:
+      - api/v3.0/badgeAccess
+      summary: List badge access details
+      description: |
+        Fetch details data about all available badge access.
+      responses:
+        "200":
+          description: Badge access details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBadgeAccessResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/badgeAccess/{badgeAccessId}:
+    get:
+      tags:
+      - api/v3.0/badgeAccess
+      summary: Get badge access details
+      description: |
+        Fetch detailed data about an existing badge access.
+      parameters:
+      - name: badgeAccessId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Badge access details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBadgeAccessResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # Event
+  /api/v3.0/event:
+    get:
+      tags:
+      - api/v3.0/event
+      summary: List event details
+      description: |
+        Fetch details data about all available events.
+      parameters:
+      - name: dateTo
+        description: Filter results by their DateTo timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: dateFrom
+        description: Filter results by their DateFrom timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/event/{eventId}:
+    get:
+      tags:
+      - api/v3.0/event
+      summary: Get event details
+      description: |
+        Fetch detailed data about an existing event.
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # RegistrationSubType
+  /api/v3.0/registrationSubType:
+    get:
+      tags:
+      - api/v3.0/registrationSubType
+      summary: List registration subtype details
+      description: |
+        Fetch details data about all available registration subtypes.
+      responses:
+        "200":
+          description: registration subtype details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRegistrationSubTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/registrationSubType/{registrationSubTypeId}:
+    get:
+      tags:
+      - api/v3.0/registrationSubType
+      summary: Get registration subtype details
+      description: |
+        Fetch detailed data about an existing registration subtype.
+      parameters:
+      - name: registrationSubTypeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration subtype details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationSubTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # RegistrationType
+  /api/v3.0/registrationType:
+    get:
+      tags:
+      - api/v3.0/registrationType
+      summary: List registration type details
+      description: |
+        Fetch details data about all available registration types.
+      responses:
+        "200":
+          description: Registration type details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRegistrationTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/registrationType/{registrationTypeId}:
+    get:
+      tags:
+      - api/v3.0/registrationType
+      summary: Get registration type details
+      description: |
+        Fetch detailed data about an existing registration type.
+      parameters:
+      - name: registrationTypeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration type details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # EventAccount
+  /api/v3.0/eventAccount:
+    get:
+      tags:
+      - api/v3.0/eventAccount
+      summary: List event account details
+      description: |
+        Fetch details data about all available event accounts.
+      responses:
+        "200":
+          description: Event account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventAccountResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/eventAccount/{eventAccountId}:
+    get:
+      tags:
+      - api/v3.0/eventAccount
+      summary: Get event account details
+      description: |
+        Fetch detailed data about an existing event account.
+      parameters:
+      - name: eventAccountId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Event account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventAccountResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # EventAccountType
+  /api/v3.0/eventAccountType:
+    get:
+      tags:
+      - api/v3.0/eventAccountType
+      summary: List event account type details
+      description: |
+        Fetch details data about all available event account types.
+      responses:
+        "200":
+          description: Event account type details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventAccountTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/eventAccountType/{eventAccountTypeId}:
+    get:
+      tags:
+      - api/v3.0/eventAccountType
+      summary: Get event account type details
+      description: |
+        Fetch detailed data about an existing event account type.
+      parameters:
+      - name: eventAccountTypeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Event account type details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventAccountTypeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # Question
+  /api/v3.0/question:
+    get:
+      tags:
+      - api/v3.0/question
+      summary: List question details
+      description: |
+        Fetch details data about all available questions.
+      responses:
+        "200":
+          description: Question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/question/{questionId}:
+    get:
+      tags:
+      - api/v3.0/question
+      summary: Get question details
+      description: |
+        Fetch detailed data about an existing question.
+      parameters:
+      - name: questionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # ContactQuestion
+  /api/v3.0/contact/{contactId}/question:
+    get:
+      tags:
+      - api/v3.0/contact
+      summary: List contact question details
+      description: |
+        Fetch contact question answers linked for an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # ContactAdditionalInformation
+  /api/v3.0/contact/{contactId}/additionalInformation:
+    get:
+      tags:
+      - api/v3.0/contact
+      summary: List contact additional information
+      description: |
+        Fetch additional information about an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact additional information details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactAdditionalInformationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # RegistrationBadgeAccess
+  /api/v3.0/registration/{registrationId}/badge:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: List registration badge barcodes
+      description: |
+        Fetch badge barcodes linked to an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration badge barcodes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationBadgeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # RegistrationBadgeAccess
+  /api/v3.0/registration/{registrationId}/badgeAccess:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: List registration badge access Ids
+      description: |
+        Fetch badge access Ids linked to an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration badge access Ids
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationBadgeAccessResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+  # RegistrationQuestion
+  /api/v3.0/registration/{registrationId}/question:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: List registration question details
+      description: |
+        Fetch contact question answers linked for an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
+### COMPONENTS
+components:
+  schemas:
+
+    # Contact
+    ListContactResponse:
+      type: object
+      properties:
+        Contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetContactResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ContactDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    ContactDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+          format: email
+        MobileCode:
+          type: string
+          example: "+44"
+        MobileNumber:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        ResponsibleOrganisationId:
+          type: string
+          format: uuid
+        ExternalId:
+          type: string
+
+    # Registration
+    ListRegistrationResponse:
+      type: object
+      properties:
+        Registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetRegistrationResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RegistrationDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    RegistrationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        RegistrationNumber:
+          type: integer
+          example: 100
+        ContactId:
+          type: string
+          format: uuid
+        RegistrationSubTypeId:
+          type: string
+          format: uuid
+        EventAccountId:
+          type: string
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+        RegistrationStatus:
+          type: object
+          properties:
+            Initials:
+              type: string
+            Name:
+              type: string
+            ExternalId:
+              type: string
+
+    # BadgeAccess
+    ListBadgeAccessResponse:
+      type: object
+      properties:
+        BadgeAccess:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeAccessDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetBadgeAccessResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BadgeAccessDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    BadgeAccessDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        Code:
+          type: string
+        Description:
+          type: string
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # Event
+    ListEventResponse:
+      type: object
+      properties:
+        Events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetEventResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    EventDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        DateFrom:
+          type: string
+          format: date-time
+        DateTo:
+          type: string
+          format: date-time
+        ExternalId:
+          type: string
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # RegistrationSubType
+    ListRegistrationSubTypeResponse:
+      type: object
+      properties:
+        RegistrationSubTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationSubTypeDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetRegistrationSubTypeResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RegistrationSubTypeDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    RegistrationSubTypeDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        RegistrationTypeId:
+          type: string  
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # RegistrationType
+    ListRegistrationTypeResponse:
+      type: object
+      properties:
+        RegistrationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationTypeDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetRegistrationTypeResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RegistrationTypeDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    RegistrationTypeDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        EventAccountTypeId:
+          type: string  
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # EventAccount
+    ListEventAccountResponse:
+      type: object
+      properties:
+        EventAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAccountDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetEventAccountResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventAccountDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    EventAccountDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        EventId:
+          type: string  
+          format: uuid
+        ResponsibleOrganisationId:
+          type: string  
+          format: uuid
+        EventAccountTypeId:
+          type: string  
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # EventAccountType
+    ListEventAccountTypeResponse:
+      type: object
+      properties:
+        EventAccountTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAccountTypeDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetEventAccountTypeResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventAccountTypeDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    EventAccountTypeDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+
+    # Question
+    ListQuestionResponse:
+      type: object
+      properties:
+        EventAccountTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetQuestionResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/QuestionDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    QuestionDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        Description:
+          type: string
+        Type:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+        
+    # ContactAdditionalInformation
+    GetContactAdditionalInformationResponse:
+      type: object
+      properties:
+        AdditionalInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactAdditionalInformationDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    ContactAdditionalInformationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+        FormField:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+        Type:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+
+    # ContactQuestion
+    GetContactQuestionResponse:
+      type: object
+      properties:
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactQuestionDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    ContactQuestionDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+
+    # RegistrationBadge
+    GetRegistrationBadgeResponse:
+      type: object
+      properties:
+        Barcodes:
+          type: array
+          items:
+            type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    # RegistrationBadgeAccess
+    GetRegistrationBadgeAccessResponse:
+      type: object
+      properties:
+        BadgeAccessIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    
+    # RegistrationQuestion
+    GetRegistrationQuestionResponse:
+      type: object
+      properties:
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationQuestionDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    RegistrationQuestionDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+
+    # BaseResponses
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
