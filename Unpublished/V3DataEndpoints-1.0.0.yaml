@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.0
 info:
-  title: V3.0 Data
+  title: V3.0 Get Data
   description: "## V3.0 Reference Documentation\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
   version: 1.0.0
 servers:
@@ -231,6 +231,74 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
         "404":
           description: "Not Found: The specified resource cannot be found"
+          
+  # Matrix
+  /api/v3.0/matrix:
+    get:
+      tags:
+      - api/v3.0/matrix
+      summary: List matrix details
+      description: |
+        Fetch details data about all available matrices.
+      parameters:
+      - name: registrationId
+        description: Returns the matrix row relating to a specified registration.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: eventAccountTypeId
+        description: Filter results by event account type.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: registrationSubTypeId
+        description: Filter results by registration subtype.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: registrationTypeId
+        description: Filter results by registration type.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Matrix details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMatrixResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/matrix/{matrixId}:
+    get:
+      tags:
+      - api/v3.0/matrix
+      summary: Get matrix details
+      description: |
+        Fetch detailed data about an existing matrix.
+      parameters:
+      - name: matrixId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Matrix details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMatrixResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
 
   # RegistrationSubType
   /api/v3.0/registrationSubType:
@@ -313,49 +381,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRegistrationTypeResponse'
-        "401":
-          description: "Unauthorised: Access token is missing or invalid"
-        "404":
-          description: "Not Found: The specified resource cannot be found"
-
-  # EventAccount
-  /api/v3.0/eventAccount:
-    get:
-      tags:
-      - api/v3.0/eventAccount
-      summary: List event account details
-      description: |
-        Fetch details data about all available event accounts.
-      responses:
-        "200":
-          description: Event account details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListEventAccountResponse'
-        "401":
-          description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/eventAccount/{eventAccountId}:
-    get:
-      tags:
-      - api/v3.0/eventAccount
-      summary: Get event account details
-      description: |
-        Fetch detailed data about an existing event account.
-      parameters:
-      - name: eventAccountId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: Event account details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetEventAccountResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
         "404":
@@ -760,6 +785,57 @@ components:
           type: string
           format: date-time
 
+    # Matrix
+    ListMatrixResponse:
+      type: object
+      properties:
+        RegistrationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatrixDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetMatrixResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/MatrixDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+    
+    MatrixDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        RegistrationSubType:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+        RegistrationType:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+        EventAccountType:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+
+
     # RegistrationSubType
     ListRegistrationSubTypeResponse:
       type: object
@@ -820,47 +896,6 @@ components:
           format: uuid
         Name:
           type: string
-        EventAccountTypeId:
-          type: string  
-          format: uuid
-        LastUpdated:
-          type: string
-          format: date-time
-        CreatedDate:
-          type: string
-          format: date-time
-
-    # EventAccount
-    ListEventAccountResponse:
-      type: object
-      properties:
-        EventAccounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventAccountDetails'
-      allOf:
-      - $ref: '#/components/schemas/BaseResponse'
-
-    GetEventAccountResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EventAccountDetails'
-      - $ref: '#/components/schemas/BaseResponse'
-
-    EventAccountDetails:
-      type: object
-      properties:
-        Id:
-          type: string
-          format: uuid
-        Name:
-          type: string
-        EventId:
-          type: string  
-          format: uuid
-        ResponsibleOrganisationId:
-          type: string  
-          format: uuid
         EventAccountTypeId:
           type: string  
           format: uuid
