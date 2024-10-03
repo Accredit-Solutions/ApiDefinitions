@@ -607,6 +607,48 @@ paths:
         "404":
           description: "Not Found: The specified resource cannot be found"
 
+  # RegistrationStatus
+  /api/v3.0/registrationStatus:
+    get:
+      tags:
+      - api/v3.0/registrationStatus
+      summary: List Registration Statuses
+      description: |
+        Fetch details data about all available registration statuses.
+      responses:
+        "200":
+          description: Registration status details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRegistrationStatusResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/registrationStatus/{registrationStatusCode}:
+    get:
+      tags:
+      - api/v3.0/registrationStatus
+      summary: Get registration status details
+      description: |
+        Fetch detailed data about an existing registration status.
+      parameters:
+      - name: registrationStatusCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Registration status details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationStatusResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
 ### COMPONENTS
 components:
   schemas:
@@ -699,15 +741,8 @@ components:
         CreatedDate:
           type: string
           format: date-time
-        RegistrationStatus:
-          type: object
-          properties:
-            Initials:
-              type: string
-            Name:
-              type: string
-            ExternalId:
-              type: string
+        RegistrationStatusCode:
+          type: string
 
     # BadgeAccess
     ListBadgeAccessResponse:
@@ -1071,6 +1106,31 @@ components:
           type: string
           format: uuid
         Answer:
+          type: string
+
+    # RegistrationStatus
+    ListRegistrationStatusResponse:
+      type: object
+      properties:
+        RegistrationStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationStatusDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+
+    GetRegistrationStatusResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RegistrationStatusDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    RegistrationStatusDetails:
+      type: object
+      properties:
+        Code:
+          type: string
+        Name:
           type: string
 
     # BaseResponses
