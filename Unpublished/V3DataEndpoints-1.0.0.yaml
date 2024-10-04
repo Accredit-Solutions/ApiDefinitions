@@ -5,7 +5,7 @@ info:
   description: "## V3.0 Reference Documentation\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
   version: 1.0.0
 servers:
-- url: https://tennisaustraliaclone-api-uat.accredit-solutions.com
+- url: https://tennisaustraliaclone2-api-uat.accredit-solutions.com
 security:
 - bearerAuth: []
 paths:
@@ -80,8 +80,8 @@ paths:
         schema:
           type: string
           format: uuid
-      - name: registrationSubTypeId
-        description: Filter results by registrationSubType.
+      - name: roleId
+        description: Filter results by role.
         in: query
         schema:
           type: string
@@ -247,13 +247,13 @@ paths:
         schema:
           type: string
           format: uuid
-      - name: eventAccountTypeId
+      - name: functionalAreaId
         description: Filter results by event account type.
         in: query
         schema:
           type: string
           format: uuid
-      - name: registrationSubTypeId
+      - name: roleId
         description: Filter results by registration subtype.
         in: query
         schema:
@@ -300,32 +300,32 @@ paths:
         "404":
           description: "Not Found: The specified resource cannot be found"
 
-  # RegistrationSubType
-  /api/v3.0/registrationSubType:
+  # Role
+  /api/v3.0/role:
     get:
       tags:
-      - api/v3.0/registrationSubType
-      summary: List registration subtype details
+      - api/v3.0/role
+      summary: List role details
       description: |
-        Fetch details data about all available registration subtypes.
+        Fetch details data about all available roless.
       responses:
         "200":
-          description: registration subtype details
+          description: role details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListRegistrationSubTypeResponse'
+                $ref: '#/components/schemas/ListRoleResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/registrationSubType/{registrationSubTypeId}:
+  /api/v3.0/role/{roleId}:
     get:
       tags:
-      - api/v3.0/registrationSubType
+      - api/v3.0/role
       summary: Get registration subtype details
       description: |
         Fetch detailed data about an existing registration subtype.
       parameters:
-      - name: registrationSubTypeId
+      - name: roleId
         in: path
         required: true
         schema:
@@ -337,7 +337,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRegistrationSubTypeResponse'
+                $ref: '#/components/schemas/GetRoleResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
         "404":
@@ -386,32 +386,32 @@ paths:
         "404":
           description: "Not Found: The specified resource cannot be found"
 
-  # EventAccountType
-  /api/v3.0/eventAccountType:
+  # FunctionalArea
+  /api/v3.0/functionalArea:
     get:
       tags:
-      - api/v3.0/eventAccountType
-      summary: List event account type details
+      - api/v3.0/functionalArea
+      summary: List functional area details
       description: |
-        Fetch details data about all available event account types.
+        Fetch details data about all available funcitonal areas.
       responses:
         "200":
-          description: Event account type details
+          description: Functional area details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListEventAccountTypeResponse'
+                $ref: '#/components/schemas/ListFunctionalAreaResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/eventAccountType/{eventAccountTypeId}:
+  /api/v3.0/functionalArea/{functionalAreaId}:
     get:
       tags:
-      - api/v3.0/eventAccountType
-      summary: Get event account type details
+      - api/v3.0/functionalArea
+      summary: Get functional area details
       description: |
-        Fetch detailed data about an existing event account type.
+        Fetch detailed data about an existing functional area.
       parameters:
-      - name: eventAccountTypeId
+      - name: functionalAreaId
         in: path
         required: true
         schema:
@@ -419,11 +419,11 @@ paths:
           format: uuid
       responses:
         "200":
-          description: Event account type details
+          description: Functional area details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetEventAccountTypeResponse'
+                $ref: '#/components/schemas/GetFunctionalAreaResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
         "404":
@@ -649,6 +649,33 @@ paths:
         "404":
           description: "Not Found: The specified resource cannot be found"
 
+  # RegistrationMatrix
+  /api/v3.0/registration/{registrationId}/matrix:
+    get:
+      tags:
+      - api/v3.0/registration
+      summary: Get associated registration matrix Id
+      description: |
+        Fetch matrix Id associated with an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration matrix Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationMatrixResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
 ### COMPONENTS
 components:
   schemas:
@@ -729,7 +756,7 @@ components:
         ContactId:
           type: string
           format: uuid
-        RegistrationSubTypeId:
+        RoleId:
           type: string
           format: uuid
         EventAccountId:
@@ -824,7 +851,7 @@ components:
     ListMatrixResponse:
       type: object
       properties:
-        RegistrationTypes:
+        Matrices:
           type: array
           items:
             $ref: '#/components/schemas/MatrixDetails'
@@ -845,50 +872,54 @@ components:
           format: uuid
         Name:
           type: string
-        RegistrationSubType:
-          type: object
-          properties:
-            Id:
-              type: string
-              format: uuid
-            Name:
-              type: string
-        RegistrationType:
-          type: object
-          properties:
-            Id:
-              type: string
-              format: uuid
-            Name:
-              type: string
-        EventAccountType:
-          type: object
-          properties:
-            Id:
-              type: string
-              format: uuid
-            Name:
-              type: string
-
-
-    # RegistrationSubType
-    ListRegistrationSubTypeResponse:
-      type: object
-      properties:
-        RegistrationSubTypes:
+        Entries:
           type: array
           items:
-            $ref: '#/components/schemas/RegistrationSubTypeDetails'
+            type: object
+            properties:
+              Role:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    format: uuid
+                  Name:
+                    type: string
+              RegistrationType:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    format: uuid
+                  Name:
+                    type: string
+              FunctionalArea:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    format: uuid
+                  Name:
+                    type: string
+
+    # Role
+    ListRoleResponse:
+      type: object
+      properties:
+        Roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDetails'
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
 
-    GetRegistrationSubTypeResponse:
+    GetRoleResponse:
       type: object
       allOf:
-      - $ref: '#/components/schemas/RegistrationSubTypeDetails'
+      - $ref: '#/components/schemas/RoleDetails'
       - $ref: '#/components/schemas/BaseResponse'
 
-    RegistrationSubTypeDetails:
+    RoleDetails:
       type: object
       properties:
         Id:
@@ -931,7 +962,7 @@ components:
           format: uuid
         Name:
           type: string
-        EventAccountTypeId:
+        FunctionalAreaId:
           type: string  
           format: uuid
         LastUpdated:
@@ -941,24 +972,24 @@ components:
           type: string
           format: date-time
 
-    # EventAccountType
-    ListEventAccountTypeResponse:
+    # FunctionalArea
+    ListFunctionalAreaResponse:
       type: object
       properties:
-        EventAccountTypes:
+        FunctionalAreas:
           type: array
           items:
-            $ref: '#/components/schemas/EventAccountTypeDetails'
+            $ref: '#/components/schemas/FunctionalAreaDetails'
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
 
-    GetEventAccountTypeResponse:
+    GetFunctionalAreaResponse:
       type: object
       allOf:
-      - $ref: '#/components/schemas/EventAccountTypeDetails'
+      - $ref: '#/components/schemas/FunctionalAreaDetails'
       - $ref: '#/components/schemas/BaseResponse'
 
-    EventAccountTypeDetails:
+    FunctionalAreaDetails:
       type: object
       properties:
         Id:
@@ -977,7 +1008,7 @@ components:
     ListQuestionResponse:
       type: object
       properties:
-        EventAccountTypes:
+        Questions:
           type: array
           items:
             $ref: '#/components/schemas/QuestionDetails'
@@ -1132,6 +1163,16 @@ components:
           type: string
         Name:
           type: string
+
+    # Registration Matrix
+    GetRegistrationMatrixResponse:
+      type: object
+      properties:
+        MatrixId:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
 
     # BaseResponses
     BaseResponseWithErrors:
