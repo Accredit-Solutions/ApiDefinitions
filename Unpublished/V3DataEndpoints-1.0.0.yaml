@@ -241,12 +241,6 @@ paths:
       description: |
         Fetch details data about all available matrices.
       parameters:
-      - name: registrationId
-        description: Returns the matrix row relating to a specified registration.
-        in: query
-        schema:
-          type: string
-          format: uuid
       - name: functionalAreaId
         description: Filter results by event account type.
         in: query
@@ -321,7 +315,7 @@ paths:
     get:
       tags:
       - api/v3.0/role
-      summary: Get registration subtype details
+      summary: Get role details
       description: |
         Fetch detailed data about an existing registration subtype.
       parameters:
