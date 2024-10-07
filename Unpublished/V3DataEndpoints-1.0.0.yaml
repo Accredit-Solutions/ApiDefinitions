@@ -750,20 +750,20 @@ components:
         ContactId:
           type: string
           format: uuid
+        EventId:
+          type: string
+          format: uuid
         RoleId:
           type: string
           format: uuid
-        EventAccountId:
+        RegistrationStatusCode:
           type: string
-          format: uuid
         LastUpdated:
           type: string
           format: date-time
         CreatedDate:
           type: string
           format: date-time
-        RegistrationStatusCode:
-          type: string
 
     # BadgeAccess
     ListBadgeAccessResponse:
