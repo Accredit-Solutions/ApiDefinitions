@@ -14,6 +14,7 @@ paths:
       tags:
       - /token
       summary: Generate access token
+      security: []
       requestBody:
         required: true
         content:
