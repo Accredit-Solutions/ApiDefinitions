@@ -643,28 +643,56 @@ paths:
         "404":
           description: "Not Found: The specified resource cannot be found"
 
-  # RegistrationMatrix
-  /api/v3.0/registration/{registrationId}/matrix:
+  # RegistrationStatus
+  /api/v3.0/badge:
     get:
       tags:
-      - api/v3.0/registration
-      summary: Get associated registration matrix Id
+      - api/v3.0/badge
+      summary: List badges
       description: |
-        Fetch matrix Id associated with an existing registration.
+        Fetch details data about all available badges.
       parameters:
       - name: registrationId
+        description: Filter results by registration.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Badge details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBadgeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/badge/{barcode}:
+    get:
+      tags:
+      - api/v3.0/badge
+      summary: Get badge details
+      description: |
+        Fetch detailed data about an existing badges.
+      parameters:
+      - name: barcode
         in: path
         required: true
         schema:
           type: string
-          format: uuid
       responses:
         "200":
-          description: Registration matrix Id
+          description: Badge details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetRegistrationMatrixResponse'
+                $ref: '#/components/schemas/GetBadgeResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
         "404":
@@ -720,6 +748,9 @@ components:
           format: uuid
         ExternalId:
           type: string
+        DOB:
+          type: string
+          format: date-time
 
     # Registration
     ListRegistrationResponse:
@@ -1158,15 +1189,40 @@ components:
         Name:
           type: string
 
-    # Registration Matrix
-    GetRegistrationMatrixResponse:
+    # Badge
+    ListBadgeResponse:
       type: object
       properties:
-        MatrixId:
-          type: string
-          format: uuid
+        Badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeDetails'
       allOf:
       - $ref: '#/components/schemas/BaseResponse'
+
+    GetBadgeResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BadgeDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+
+    BadgeDetails:
+      type: object
+      properties:
+        Barcode:
+          type: string
+        RegistrationId:
+          type: string
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+        PrintedDate:
+          type: string
+          format: date-time
 
     # BaseResponses
     BaseResponseWithErrors:
