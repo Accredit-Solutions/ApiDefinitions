@@ -789,7 +789,7 @@ components:
         LastUpdated:
           type: string
           format: date-time
-        ResponsibleOrganisationId:
+        AffiliatedOrganisationId:
           type: string
           format: uuid
         ExternalId:
@@ -831,6 +831,9 @@ components:
           type: string
           format: uuid
         RoleId:
+          type: string
+          format: uuid
+        ResponsibleOrganisationId:
           type: string
           format: uuid
         RegistrationStatusCode:
