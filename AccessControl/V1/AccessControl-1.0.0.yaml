@@ -232,31 +232,43 @@ components:
           example: 1000
 
     ValidationResultsRequest:
-      required:
+      type: array
+      items:
+        type: object
+        required:
         - ValidationResults
         - AreaId
         - Barcode
         - DateTime
-      type: array
-      items:
-        type: object
         properties:
           ValidationResult:
             type: integer
             example: 1
+            description: Code indicating the result of the scan. Refer to ValidationResults reference data for values.
           AreaId:
             type: string
             format: uuid
+            description: Identifier of the Access Control Area scanned into.
           Barcode:
             type: string
+            description: Barcode assigned to the badge.
           ExternalId:
             type: string
+            description: Can be optionally included for tracking purposes.
           DateTime:
             type: string
             format: date-time
+            description: Record of when the scan occurred, not the current datetime.
           Direction:
             type: integer
-            example: 1
+            description: | 
+              The direction of the scan for bidirectional scanning.
+              1=In, 2=Out
+            format: int32
+            default: 1
+            enum:
+              - 1
+              - 2
 
     BaseResponseWithErrors:
       properties:
