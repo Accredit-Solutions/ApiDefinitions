@@ -108,6 +108,34 @@ paths:
                 $ref: '#/components/schemas/GetAccessControlReportResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
+  /api/accessControl/validationResults:
+    post:
+      tags:
+      - api/accessControl
+      summary: Insert access control tracking results
+      description: |
+        Allows the insertion of validation results taken from offline access control scanning. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationResultsRequest'
+        required: true
+      responses:
+        "200":
+          description: Access control validation results inserted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        "400":
+          description: Badge Validation Response With Errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
 
 components:
   schemas:
@@ -202,6 +230,33 @@ components:
         TotalCount:
           type: integer
           example: 1000
+
+    ValidationResultsRequest:
+      required:
+        - ValidationResults
+        - AreaId
+        - Barcode
+        - DateTime
+      type: array
+      items:
+        type: object
+        properties:
+          ValidationResult:
+            type: integer
+            example: 1
+          AreaId:
+            type: string
+            format: uuid
+          Barcode:
+            type: string
+          ExternalId:
+            type: string
+          DateTime:
+            type: string
+            format: date-time
+          Direction:
+            type: integer
+            example: 1
 
     BaseResponseWithErrors:
       properties:
