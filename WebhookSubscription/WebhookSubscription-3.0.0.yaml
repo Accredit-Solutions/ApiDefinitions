@@ -13,7 +13,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: webhookSubscription
+      summary: List all webhook subscriptions
       description: Retrieve a list of all available webhook subscriptions.
       responses:
         "200":
@@ -29,7 +29,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: webhookSubscription
+      summary: Create a new webhook subscription
       description: "Create a new webhook subscription and generate a new signature key, if one does not already exist."
       requestBody:
         content:
@@ -56,7 +56,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: webhookSubscription/{subscriptionId}
+      summary: Get a specific webhook subscription
       description: Retrieve details of a specific webhook subscription by its Id.
       parameters:
       - name: subscriptionId
@@ -86,7 +86,7 @@ paths:
     delete:
       tags:
       - v1.0
-      summary: webhookSubscription/{subscriptionId}
+      summary: Cancel a webhook subscription
       description: Cancel an existing webhook subscription by providing its Id.
       parameters:
       - name: subscriptionId
@@ -116,7 +116,7 @@ paths:
     patch:
       tags:
       - v1.0
-      summary: webhookSubscription/{subscriptionId}
+      summary: Update a webhook subscription
       description: Update an existing webhook subscription by providing its Id.
       parameters:
       - name: subscriptionId
@@ -153,7 +153,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: webhookSubscription/events
+      summary: List subscription events
       description: Retrieve a list of subscription events available to your user.
       responses:
         "200":
@@ -168,7 +168,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: webhookSubscription/signatureKey
+      summary: Generate a new signature key
       description: Generates a new signature key for the user and returns their public key as a base64 string.
       responses:
         "200":
@@ -183,7 +183,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: webhookSubscription/triggerSampleEventNotification
+      summary: Trigger a sample event notification
       description: "Trigger a sample event notification to your chosen url, using generated test data."
       requestBody:
         content:

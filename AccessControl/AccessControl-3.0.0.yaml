@@ -13,7 +13,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: accessControl/report
+      summary: Get access control report
       description: |
         Query access control report data available to the current user.
       parameters:
@@ -112,7 +112,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: accessControl/validationResults
+      summary: Insert access control tracking results
       description: |
         Allows the insertion of validation results taken from offline access control scanning. 
       requestBody:

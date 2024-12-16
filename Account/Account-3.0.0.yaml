@@ -6,6 +6,7 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -13,7 +14,7 @@ paths:
     get:
       tags:
       - v2.0
-      summary: account
+      summary: List all accounts
       description: Retrieve a list of all available accounts.
       parameters:
       - name: lastUpdated
@@ -54,7 +55,7 @@ paths:
     post:
       tags:
       - v2.0
-      summary: account
+      summary: Create a new account
       description: Insert an account in the Accredit system.
       requestBody:
         content:
@@ -81,7 +82,7 @@ paths:
     get:
       tags:
       - v2.0
-      summary: account/{accountId}
+      summary: Get an existing account
       description: Retrieve details of a specific account by its Id.
       parameters:
       - name: accountId
@@ -104,7 +105,7 @@ paths:
     patch:
       tags:
       - v2.0
-      summary: account/{accountId}
+      summary: Update an account
       description: Update an existing account by providing its Id.
       parameters:
       - name: accountId

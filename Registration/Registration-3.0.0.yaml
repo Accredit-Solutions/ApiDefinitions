@@ -13,7 +13,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: registration
+      summary: List registration details
       description: |
         Fetch details data about all available registrations.
       parameters:
@@ -54,7 +54,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: registration/{registrationId}
+      summary: Get registration details
       description: |
         Fetch detailed data about an existing registration.
       parameters:
@@ -79,7 +79,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: registration/{registrationId}/badge
+      summary: List registration badge barcodes
       description: |
         Fetch badge barcodes linked to an existing registration.
       parameters:
@@ -104,7 +104,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: registration/{registrationId}/badgeAccess
+      summary: List registration badge access Ids
       description: |
         Fetch badge access Ids linked to an existing registration.
       parameters:
@@ -129,7 +129,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: registration/{registrationId}/question
+      summary: List registration question details
       description: |
         Fetch contact question answers linked for an existing registration.
       parameters:

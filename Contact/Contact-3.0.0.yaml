@@ -6,6 +6,7 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -13,7 +14,7 @@ paths:
     post:
       tags:
       - v2.0
-      summary: contact/getData
+      summary: Fetch user report contact details
       description: |
         This API has a configurable response body, based upon the report assigned to your user.
         
@@ -45,7 +46,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: contact
+      summary: List contact details
       description: |
         Fetch details data about all available contact.
       parameters:
@@ -74,7 +75,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: contact/{contactId}
+      summary: Get contact details
       description: |
         Fetch detailed data about an existing contact.
       parameters:
@@ -99,7 +100,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: contact/{contactId}/question
+      summary: List contact question details
       description: |
         Fetch contact question answers linked for an existing contact.
       parameters:
@@ -124,7 +125,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: contact/{contactId}/additionalInformation
+      summary: List contact additional information
       description: |
         Fetch additional information about an existing contact.
       parameters:

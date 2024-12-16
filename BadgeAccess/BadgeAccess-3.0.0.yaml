@@ -7,6 +7,7 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -14,7 +15,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: badgeAccess
+      summary: List badge access details
       description: |
         Fetch details data about all available badge access.
       responses:
@@ -30,7 +31,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: badgeAccess/{badgeAccessId}
+      summary: Get badge access details
       description: |
         Fetch detailed data about an existing badge access.
       parameters:

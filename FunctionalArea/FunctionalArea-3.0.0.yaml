@@ -6,6 +6,7 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -13,7 +14,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: functionalArea
+      summary: List functional area details
       description: |
         Fetch details data about all available funcitonal areas.
       responses:
@@ -29,7 +30,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: functionalArea/{functionalAreaId}
+      summary: Get functional area details
       description: |
         Fetch detailed data about an existing functional area.
       parameters:
