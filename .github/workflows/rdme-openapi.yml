@@ -91,7 +91,7 @@ jobs:
       - name: V3.0 Account
         uses: readmeio/rdme@v9
         with:
-          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Accoun/Account-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676014171e08f97a559564be
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Account/Account-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676014171e08f97a559564be
 
       - name: V3.0 Badge
         uses: readmeio/rdme@v9
