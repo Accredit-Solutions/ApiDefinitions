@@ -1,0 +1,552 @@
+---
+openapi: 3.0.0
+info:
+  title: Badge
+  description: "## Accredit API for retrieveing and validating badeg data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 3.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+security:
+- bearerAuth: []
+paths:
+  /api/v2.0/badge/areas:
+    get:
+      tags:
+      - v2.0
+      summary: List all available areas
+      description: |
+        Fetches the details of all Access Control areas available to your user.
+      responses:
+        "200":
+          description: Area details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAreasResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v2.0/badge/validation:
+    post:
+      tags:
+      - v2.0
+      summary: Validate a badge against an area
+      description: |
+        Perform a badge validation by area and barcode for a real-time response.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadgeValidationRequest'
+        required: true
+      responses:
+        "200":
+          description: Badge validation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeValidationResponse'
+        "400":
+          description: Badge Validation Response With Errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeValidationResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v2.0/badge/validationResults:
+    get:
+      tags:
+      - v2.0
+      summary: Bulk download for offline mode scanning
+      description: "Allows users to bulk download all barcodes currently active with the expected response from every active Area on Accredit. \n\nThis allows for a bulk snapshot download of barcodes in case of a loss in connectivity with the real-time service. This is particulary useful for scanners that are in areas with poor connectivity\n"
+      parameters:
+      - name: areaId
+        description: Filter results by Area.
+        in: query
+        required: false
+        style: form
+        schema:
+          type: string
+          format: uuid
+      - name: pageSize
+        description: Set the page size for pagination.
+        in: query
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          example: 100
+      - name: pageNumber
+        description: Set the page number for pagination.
+        in: query
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 1
+          example: 1
+      - name: lastUpdated
+        description: Filter results by their Last Updated date.
+        in: query
+        required: false
+        style: form
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Badge validation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeValidationResultsPaginatedResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    post:
+      tags:
+      - v2.0
+      summary: Initiate bulk validation job
+      description: |
+        Sets up a background job to run multiple badge validations. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkValidationRequest'
+        required: true
+      responses:
+        "200":
+          description: Bulk validation job initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeValidationResult'
+        "400":
+          description: Badge Validation Response With Errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeValidationResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/badge:
+    get:
+      tags:
+      - v3.0
+      summary: List badges
+      description: |
+        Fetch details data about all available badges.
+      parameters:
+      - name: registrationId
+        description: Filter results by registration.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Badge details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBadgeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/badge/{barcode}:
+    get:
+      tags:
+      - v3.0
+      summary: Get badge details
+      description: |
+        Fetch detailed data about an existing badges.
+      parameters:
+      - name: barcode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Badge details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBadgeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+components:
+  schemas:
+    GetAreasResponse:
+      type: object
+      properties:
+        Areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/AreaDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    BadgeValidationRequest:
+      required:
+      - AreaIdentifier
+      - DateTime
+      type: object
+      properties:
+        Barcode:
+          type: string
+          description: "Barcode of a printed badge. Either a Barcode, ContactId, ExternalId or RfidCode must be supplied in the request body."
+        ContactId:
+          type: integer
+          description: An alternative to barcode. Only used for systems with this data via the contact/getData API call.
+          format: int32
+          example: 1
+        ExternalId:
+          type: string
+          description: An alternative to barcode. For use with external system integrations.
+        RfidCode:
+          type: string
+          description: An alternative to barcode. For use with RFID readers.
+        AreaIdentifier:
+          type: string
+          description: Identifier of the Access Control Area.
+          format: uuid
+        DateTime:
+          type: string
+          description: The datetime of the record (advisable to use local scan time).
+          format: date-time
+        Mode:
+          type: integer
+          description: 1=Online, 2=Offline
+          format: int32
+          default: 1
+          enum:
+            - 1
+            - 2
+        Direction:
+          type: integer
+          description: | 
+            The direction of the scan for bidirectional scanning.
+            1=In, 2=Out
+          format: int32
+          default: 1
+          enum:
+            - 1
+            - 2
+    BulkValidationRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/BadgeValidationRequest'
+    BadgeValidationResult:
+      type: object
+      properties:
+        ValidationResult:
+          type: integer
+          description: Code indicating the result of the scan. Refer to ValidationResults table.
+          format: int32
+          example: 1
+        ValidationResultName:
+          type: string
+          example: Success
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    Badge:
+      type: object
+      properties:
+        Barcode:
+          type: string
+        ContactId:
+          type: integer
+          format: int32
+          example: 1
+        RfidCode:
+          type: string
+        Forename:
+          type: string
+        Surname:
+          type: string
+        RegistrationSubTypeName:
+          type: string
+          description: Individual’s role at even
+        AffiliatedOrganisationName:
+          type: string
+          description: Company name of person
+        ResponsibleOrganisationName:
+          type: string
+          description: Main Company Account the individual belongs to
+        Photo:
+          type: string
+          description: Base64 encoded string
+        PhotoIdentifier:
+          type: string
+          format: uuid
+        PhotoUrl:
+          type: string
+          description: API link to photo if required to download
+          format: uri
+          example: "api/file/photo/{encodedId}"
+        PhotoFileName:
+          type: string
+          format: byte
+    BadgeValidationResponse:
+      type: object
+      properties:
+        Badge:
+          $ref: '#/components/schemas/Badge'
+      allOf:
+      - $ref: '#/components/schemas/BadgeValidationResult'
+    BadgeValidationResultsPaginatedResponse:
+      type: object
+      properties:
+        TotalRecords:
+          type: integer
+          description: Total number of records accross all pages.
+          format: int32
+          example: 150
+        TotalPages:
+          type: integer
+          format: int32
+          example: 2
+        PageSize:
+          type: integer
+          format: int32
+          example: 100
+        PageNumber:
+          type: integer
+          format: int32
+          example: 1
+        Data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeValidationResultDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetBadgesRequest:
+      type: object
+      properties:
+        EventIdentifier:
+          type: string
+          format: uuid
+          description: The unique identifier for the event.
+        PageNumber:
+          type: integer
+          description: Set the page number for pagination.
+          example: 1
+        PageSize:
+          type: integer
+          description: Set the page size for pagination.
+          example: 100
+        LastUpdated:
+          type: string
+          format: date-time
+          description: Filter results by their Last Updated date.
+      required:
+        - EventIdentifier
+    GetBadgesResponse:
+      type: object
+      properties:
+        Identifier:
+          type: string
+          format: uuid
+          description: The unique identifier for the badge
+        Barcode:
+          type: string
+          description: The barcode of the badge
+        BadgeAccesses:
+          type: array
+          items:
+            type: string
+          description: List of badge access permissions
+        Title:
+          type: string
+          description: The title of the badge holder
+        FirstName:
+          type: string
+          description: The first name of the badge holder
+        LastName:
+          type: string
+          description: The last name of the badge holder
+        Company:
+          type: string
+          description: The company associated with the badge holder
+        Active:
+          type: boolean
+          description: Indicates if the badge is active
+        LastUpdated:
+          type: string
+          format: date-time
+          description: The last updated timestamp of the badge
+        ContactId:
+          type: integer
+          example: 100
+          description: The numeric contact id associated with the badge holder
+        ContactIdentifier:
+          type: string
+          format: uuid
+          description: The unique contact id associated with the badge holder
+        PhotoUrl:
+          type: string
+          description: The URL of the badge holder's photo
+        PhotoFileName:
+          type: string
+          description: The file name of the badge holder's photo
+        RfIdCode:
+          type: string
+          description: The RFID code associated with the badge
+        ResponsibleOrganisationName:
+          type: string
+          description: The name of the responsible organization
+        ResponsibleOrganisationIdentifier:
+          type: string
+          description: The identifier of the responsible organization
+        RegistrationSubTypeName:
+          type: string
+          description: The registration subtype 
+    ListBadgeResponse:
+      type: object
+      properties:
+        Badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetBadgeResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BadgeDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+    BadgeDetails:
+      type: object
+      properties:
+        Barcode:
+          type: string
+        RegistrationId:
+          type: string
+          format: uuid
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+        PrintedDate:
+          type: string
+          format: date-time
+    BadgeValidationResponseWithErrors:
+      type: object
+      properties:
+        ValidationResult:
+          type: integer
+          format: int32
+          example: 2
+        ValidationResultName:
+          type: string
+          example: BadgeNotFound
+      allOf:
+      - $ref: '#/components/schemas/BaseResponseWithErrors'
+    AreaDetails:
+      type: object
+      properties:
+        Name:
+          type: string
+        Identifier:
+          type: string
+          format: uuid
+    AreaValidationResults:
+      type: object
+      properties:
+        AreaIdentifier:
+          type: string
+          description: Identifier of the Access Control Area.
+          format: uuid
+        ValidationResult:
+          type: integer
+          description: Code indicating the result of the scan. Refer to ValidationResults table.
+          format: int32
+          example: 1
+        ValidationResultName:
+          type: string
+          example: Success
+    BadgeValidationResultDetails:
+      type: object
+      properties:
+        Badge:
+          $ref: '#/components/schemas/Badge'
+        AreaValidationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/AreaValidationResults'
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadgeValidationResponseWithErrors:
+      description: Badge Validation Response With Errors
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadgeValidationResponseWithErrors'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

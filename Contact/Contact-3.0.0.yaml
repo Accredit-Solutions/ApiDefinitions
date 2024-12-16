@@ -1,0 +1,464 @@
+---
+openapi: 3.0.0
+info:
+  title: Contact
+  description: "## Accredit API for retrieving contact data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 3.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/v2.0/contact/getData:
+    post:
+      tags:
+      - v2.0
+      summary: Fetch user report contact details
+      description: |
+        This API has a configurable response body, based upon the report assigned to your user.
+        
+        An assigned report is required for use of this API, and it will return only the response fields included in the assigned report.
+
+        If you are having trouble setting up a report, or you are not receiving the response you have configured, please reach out to your point of contact at Accredit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDataRequest'
+        required: true
+      responses:
+        "200":
+          description: Organisation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/contact:
+    get:
+      tags:
+      - v3.0
+      summary: List contact details
+      description: |
+        Fetch details data about all available contact.
+      parameters:
+      - name: emailAddress
+        description: Filter results by email address.
+        in: query
+        schema:
+          type: string
+          format: email
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListContactResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/contact/{contactId}:
+    get:
+      tags:
+      - v3.0
+      summary: Get contact details
+      description: |
+        Fetch detailed data about an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/v3.0/contact/{contactId}/question:
+    get:
+      tags:
+      - v3.0
+      summary: List contact question details
+      description: |
+        Fetch contact question answers linked for an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/v3.0/contact/{contactId}/additionalInformation:
+    get:
+      tags:
+      - v3.0
+      summary: List contact additional information
+      description: |
+        Fetch additional information about an existing contact.
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Contact additional information details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContactAdditionalInformationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+components:
+  schemas:
+    GetContactsResponse:
+      type: object
+      properties:
+        Contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactRegistrationsDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    ContactRegistrationsDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        ExternalId:
+          type: string
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+          format: email
+        MobileCode:
+          type: string
+          example: "+44"
+        MobileNumber:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        AffiliatedOrganisation:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        Registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationDetails'
+    RegistrationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        Status:
+          $ref: '#/components/schemas/RegistrationStatusDetails'
+        Role:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        Event:
+          $ref: '#/components/schemas/GenericEntityDetails'
+        ResponsibleOrganisation:
+          $ref: '#/components/schemas/GenericEntityDetails'
+    RegistrationStatusDetails:
+      type: object
+      properties:
+        Code:
+          type: integer
+          example: 1
+        Name:
+          type: string
+    GenericEntityDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+    GetDataResponse:
+      type: object
+      properties:
+        ContactData:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+            example:
+            - ReportField_1: string
+              ReportField_2: 1
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetDataRequest:
+      type: object
+      properties:
+        EventId:
+          type: integer
+          description: This field is obsolete. EventIdentifier should be used where possible.
+          example: 1
+        EventIdentifier:
+          type: string
+          description: "Filter results by event."
+          format: uuid
+        ContactId:
+          type: integer
+          description: This field is obsolete. ContactIdentifier should be used where possible.
+          example: 1
+        ContactIdentifier:
+          type: string
+          description: "Filter results by contact."
+          format: uuid
+        RegistrationNumber:
+          type: integer
+          description: Filter results by registration number
+          example: 1
+        RegistrationSubTypeIds:
+          type: array
+          description: Filter results by assigned roles
+          items:
+            type: integer
+            example: 1
+        RegistrationStatusIds:
+          type: array
+          description: Filter results by a registrations status
+          items:
+            type: integer
+            example: 1
+        FirstName:
+          type: string
+          description: Filter results by First Name
+        Surname:
+          type: string
+          description: Filter results by Surname
+        EmailAddress:
+          type: string
+          description: Filter results by email address
+          format: email
+        EmailPresent:
+          type: boolean
+          description: Filter results with/without emails addresses
+        PrintStatus:
+          type: integer
+          description: |
+            Filter results by their print status
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+        LastUpdated:
+          type: string
+          description: Filters results by their LastUpdated timestamp
+          format: date-time
+        InclUnnamedPass:
+          type: boolean
+          description: Filters results to include/exclude unamed passes
+          default: false
+        BadgeAccessIds:
+          type: array
+          description: Filters results by their assigned badge accesses
+          items:
+            type: integer
+            example: 1
+        PassCollected:
+          type: boolean
+          description: Filters results which have/have not had their passes collected
+        EventExternalId:
+          type: string
+          description: "Filters results by event, using its external ID."
+          format: uuid
+    ListContactResponse:
+      type: object
+      properties:
+        Contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetContactResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ContactDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+    ContactDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Email:
+          type: string
+          format: email
+        MobileCode:
+          type: string
+          example: "+44"
+        MobileNumber:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        AffiliatedOrganisationId:
+          type: string
+          format: uuid
+        ExternalId:
+          type: string
+        DOB:
+          type: string
+          format: date
+    GetContactAdditionalInformationResponse:
+      type: object
+      properties:
+        AdditionalInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactAdditionalInformationDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    ContactAdditionalInformationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+        FormField:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+        Type:
+          type: object
+          properties:
+            Id:
+              type: string
+              format: uuid
+            Name:
+              type: string
+    GetContactQuestionResponse:
+      type: object
+      properties:
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactQuestionDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    ContactQuestionDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

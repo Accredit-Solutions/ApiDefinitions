@@ -1,0 +1,150 @@
+---
+openapi: 3.0.0
+info:
+  title: Event
+  description: "## Accredit API for retrieving event data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 3.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+  description: SwaggerHub API Auto Mocking
+security:
+- bearerAuth: []
+paths:
+  /api/v3.0/event:
+    get:
+      tags:
+      - v3.0
+      summary: List event details
+      description: |
+        Fetch details data about all available events.
+      parameters:
+      - name: dateTo
+        description: Filter results by their DateTo timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: dateFrom
+        description: Filter results by their DateFrom timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/event/{eventId}:
+    get:
+      tags:
+      - v3.0
+      summary: Get event details
+      description: |
+        Fetch detailed data about an existing event.
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Event details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+components:
+  schemas:
+    ListEventResponse:
+      type: object
+      properties:
+        Events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetEventResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+    EventDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        DateFrom:
+          type: string
+          format: date-time
+        DateTo:
+          type: string
+          format: date-time
+        ExternalId:
+          type: string
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

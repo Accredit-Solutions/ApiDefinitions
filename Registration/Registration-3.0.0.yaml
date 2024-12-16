@@ -1,0 +1,279 @@
+---
+openapi: 3.0.0
+info:
+  title: Registration
+  description: "## Accredit API for retrieving registration data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 3.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+security:
+- bearerAuth: []
+paths:
+  /api/v3.0/registration:
+    get:
+      tags:
+      - v3.0
+      summary: List registration details
+      description: |
+        Fetch details data about all available registrations.
+      parameters:
+      - name: eventId
+        description: Filter results by event.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: roleId
+        description: Filter results by role.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: contactId
+        description: Filter results by contact.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: lastUpdated
+        description: Filter results by their Last Updated timestamp.
+        in: query
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRegistrationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/v3.0/registration/{registrationId}:
+    get:
+      tags:
+      - v3.0
+      summary: Get registration details
+      description: |
+        Fetch detailed data about an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/v3.0/registration/{registrationId}/badge:
+    get:
+      tags:
+      - v3.0
+      summary: List registration badge barcodes
+      description: |
+        Fetch badge barcodes linked to an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration badge barcodes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationBadgeResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/v3.0/registration/{registrationId}/badgeAccess:
+    get:
+      tags:
+      - v3.0
+      summary: List registration badge access Ids
+      description: |
+        Fetch badge access Ids linked to an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration badge access Ids
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationBadgeAccessResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/v3.0/registration/{registrationId}/question:
+    get:
+      tags:
+      - v3.0
+      summary: List registration question details
+      description: |
+        Fetch contact question answers linked for an existing registration.
+      parameters:
+      - name: registrationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Registration question details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRegistrationQuestionResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+components:
+  schemas:
+    ListRegistrationResponse:
+      type: object
+      properties:
+        Registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetRegistrationResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RegistrationDetails'
+      - $ref: '#/components/schemas/BaseResponse'
+    RegistrationDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        RegistrationNumber:
+          type: integer
+          example: 100
+        ContactId:
+          type: string
+          format: uuid
+        EventId:
+          type: string
+          format: uuid
+        RoleId:
+          type: string
+          format: uuid
+        ResponsibleOrganisationId:
+          type: string
+          format: uuid
+        RegistrationStatusCode:
+          type: string
+        LastUpdated:
+          type: string
+          format: date-time
+        CreatedDate:
+          type: string
+          format: date-time
+    GetRegistrationBadgeResponse:
+      type: object
+      properties:
+        Barcodes:
+          type: array
+          items:
+            type: string
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetRegistrationBadgeAccessResponse:
+      type: object
+      properties:
+        BadgeAccessIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetRegistrationQuestionResponse:
+      type: object
+      properties:
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationQuestionDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    RegistrationQuestionDetails:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Answer:
+          type: string
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

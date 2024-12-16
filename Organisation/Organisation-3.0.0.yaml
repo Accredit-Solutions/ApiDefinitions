@@ -1,0 +1,450 @@
+---
+openapi: 3.0.0
+info:
+  title: Organisation
+  description: "## Accredit API for organisation data\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 3.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+security:
+- bearerAuth: []
+paths:
+  /api/organisation:
+    get:
+      tags:
+      - v1.0
+      summary: List available organisations
+      description: |
+        List all organisations available to the current user.
+      responses:
+        "200":
+          description: Organisation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganisationsResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    post:
+      tags:
+      - v1.0
+      summary: Create a new organisation
+      description: |
+        Insert an organisation in the Accredit system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationPostRequest'
+        required: true
+      responses:
+        "200":
+          description: Organisation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisationResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/organisation/{organisationId}:
+    get:
+      tags:
+      - v1.0
+      summary: Get an existing organisations
+      description: |
+        Fetch the details of an existing organisation by its Id.
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Organisation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisationGetResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+    patch:
+      tags:
+      - v1.0
+      summary: Update an existing organisation
+      description: |
+        Update the details of an existing organisation by its Id.
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganisationPatchRequest'
+        required: true
+      responses:
+        "200":
+          description: Organisation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganisationResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/organisation/{organisationId}/allocation:
+    get:
+      tags:
+      - v1.0
+      summary: Get organisation allocations
+      description: |
+        Fetch the available event / role allocations of an organisation by its Id.
+      parameters:
+      - name: organisationId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: EventId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: Filter allocations by event.
+      - name: EventFrom
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter allocations to show only event with a StartDate FROM this date.
+      - name: EventTo
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Filter allocations to show only event with a StartDate BEFORE this date.
+      responses:
+        "200":
+          description: Organisation Allocation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganisationAllocationResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+components:
+  schemas:
+    OrganisationPostRequest:
+      required:
+      - OrganisationName
+      - OrganisationTypeId
+      type: object
+      properties:
+        OrganisationName:
+          maxLength: 255
+          description: Sets the organisation name.
+          type: string
+        OrganisationTypeId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation type. To be shared by Accredit for specific client instance.
+          format: uuid
+        OrganisationStatusId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation status. To be shared by Accredit for specific client instance.
+          format: uuid
+        CountryCode:
+          maxLength: 3
+          type: string
+          description: 3-digit courny code representing the country. Refer to the Country Code Mapping for reference.
+          example: GBR
+        AccountManagerId:
+          maxLength: 255
+          type: string
+          description: "Sets the Key Account Manager for the organisation. The Account Manager can be created/fetched via the Accredit Account API endpoint."
+          format: uuid
+        Tags:
+          maxLength: 255
+          type: array
+          description: Sets any tags to be included on the organisation. To be shared by Accredit for specific client instance.
+          items:
+            type: string
+            format: uuid
+    OrganisationPatchRequest:
+      type: object
+      properties:
+        OrganisationName:
+          maxLength: 255
+          description: Sets the organisation name.
+          type: string
+        OrganisationTypeId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation type. To be shared by Accredit for specific client instance.
+          format: uuid
+        OrganisationStatusId:
+          maxLength: 255
+          type: string
+          description: Sets the organisation status. To be shared by Accredit for specific client instance.
+          format: uuid
+        CountryCode:
+          maxLength: 3
+          type: string
+          description: 3-digit courny code representing the country. Refer to the Country Code Mapping for reference.
+          example: GBR
+        AccountManagerId:
+          maxLength: 255
+          type: string
+          description: "Sets the Key Account Manager for the organisation. The Account Manager can be created/fetched via the Accredit Account API endpoint."
+          format: uuid
+        Tags:
+          maxLength: 255
+          type: array
+          description: Sets any tags to be included on the organisation. To be shared by Accredit for specific client instance.
+          items:
+            type: string
+            format: uuid
+    OrganisationResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    ListOrganisationsResponse:
+      type: object
+      properties:
+        Organisations:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationInfo'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    OrganisationInfo:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+    OrganisationGetResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+        OrganisationName:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        OrganisationStatus:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        OrganisationType:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        KeyAccountManager:
+          $ref: '#/components/schemas/OrganisationGetResponse_KeyAccountManager'
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationGetResponse_Questions'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    OrganisationAllocationGetResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+        OrganisationName:
+          type: string
+        CreatedDate:
+          type: string
+          format: date-time
+        LastUpdated:
+          type: string
+          format: date-time
+        OrganisationStatus:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        OrganisationType:
+          $ref: '#/components/schemas/OrganisationGetResponse_OrganisationStatus'
+        KeyAccountManager:
+          $ref: '#/components/schemas/OrganisationGetResponse_KeyAccountManager'
+        Questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationGetResponse_Questions'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    GetOrganisationAllocationResponse:
+      type: object
+      properties:
+        OrganisationId:
+          type: string
+          format: uuid
+        OrganisationName:
+          type: string
+        Allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationEventInfo'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
+    AllocationEventInfo:
+      type: object
+      properties:
+        EventName:
+          type: string
+        EventId:
+          type: string
+          format: uuid
+        Roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationRoleInfo'
+    AllocationRoleInfo:
+      type: object
+      properties:
+        RoleName:
+          type: string
+        RoleId:
+          type: string
+          format: uuid
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+    OrganisationGetResponse_OrganisationStatus:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+    OrganisationGetResponse_KeyAccountManager:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Forename:
+          type: string
+        Surname:
+          type: string
+        UserName:
+          type: string
+        Email:
+          type: string
+          format: email
+        PhoneCode:
+          type: string
+        PhoneNumber:
+          type: string
+    OrganisationGetResponse_Questions:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+        Answer:
+          type: string
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
+  parameters:
+    OrganisationId:
+      name: organisationId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
