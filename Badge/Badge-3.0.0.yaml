@@ -13,7 +13,7 @@ paths:
     get:
       tags:
       - v2.0
-      summary: List all available areas
+      summary: badge/areas
       description: |
         Fetches the details of all Access Control areas available to your user.
       responses:
@@ -35,7 +35,7 @@ paths:
     post:
       tags:
       - v2.0
-      summary: Validate a badge against an area
+      summary: badge/validation
       description: |
         Perform a badge validation by area and barcode for a real-time response.
       requestBody:
@@ -63,7 +63,7 @@ paths:
     get:
       tags:
       - v2.0
-      summary: Bulk download for offline mode scanning
+      summary: badge/validationResults
       description: "Allows users to bulk download all barcodes currently active with the expected response from every active Area on Accredit. \n\nThis allows for a bulk snapshot download of barcodes in case of a loss in connectivity with the real-time service. This is particulary useful for scanners that are in areas with poor connectivity\n"
       parameters:
       - name: areaId
@@ -120,7 +120,7 @@ paths:
     post:
       tags:
       - v2.0
-      summary: Initiate bulk validation job
+      summary: badge/validationResults
       description: |
         Sets up a background job to run multiple badge validations. 
       requestBody:
@@ -148,7 +148,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: List badges
+      summary: badge
       description: |
         Fetch details data about all available badges.
       parameters:
@@ -177,7 +177,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: Get badge details
+      summary: badge/{barcode}
       description: |
         Fetch detailed data about an existing badges.
       parameters:

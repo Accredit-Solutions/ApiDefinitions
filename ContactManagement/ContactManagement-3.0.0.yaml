@@ -6,7 +6,6 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -14,7 +13,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Insert a new contact
+      summary: contactManagement/insertContact
       requestBody:
         content:
           application/json:
@@ -40,7 +39,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Update an existing contact
+      summary: contactManagement/updateContact
       requestBody:
         content:
           application/json:
@@ -66,7 +65,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Register an existing contact
+      summary: contactManagement/registerContact
       requestBody:
         content:
           application/json:
@@ -92,7 +91,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Update an existing registration
+      summary: contactManagement/updateRegistration
       requestBody:
         content:
           application/json:
@@ -118,7 +117,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Offboard an existing contact
+      summary: contactManagement/offboardContact
       requestBody:
         content:
           application/json:

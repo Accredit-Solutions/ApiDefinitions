@@ -13,7 +13,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: List available organisations
+      summary: organisation
       description: |
         List all organisations available to the current user.
       responses:
@@ -28,7 +28,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: Create a new organisation
+      summary: organisation
       description: |
         Insert an organisation in the Accredit system.
       requestBody:
@@ -56,7 +56,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: Get an existing organisations
+      summary: organisation/{organisationId}
       description: |
         Fetch the details of an existing organisation by its Id.
       parameters:
@@ -86,7 +86,7 @@ paths:
     patch:
       tags:
       - v1.0
-      summary: Update an existing organisation
+      summary: organisation/{organisationId}
       description: |
         Update the details of an existing organisation by its Id.
       parameters:
@@ -123,7 +123,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: Get organisation allocations
+      summary: organisation/{organisationId}/allocation
       description: |
         Fetch the available event / role allocations of an organisation by its Id.
       parameters:

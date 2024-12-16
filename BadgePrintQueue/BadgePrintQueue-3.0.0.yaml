@@ -6,7 +6,6 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -14,7 +13,7 @@ paths:
     post:
       tags:
       - v1.0
-      summary: List all badge export zip files
+      summary: printQueue/listBadgeExportZipFiles
       description: |
         Retrieve the details of all Badge Export Zip Files available to your user.
       requestBody:
@@ -41,7 +40,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: Get badge export zip file
+      summary: printQueue/downloadBadgeExportFile/{badgeZipFileId}
       description: |
         Download a badge export zip file using its id.
       parameters:
@@ -73,7 +72,7 @@ paths:
     get:
       tags:
       - v1.0
-      summary: Get badge export metadata
+      summary: printQueue/getBadgeExportMetadata/{badgeZipFileId}
       description: |
         Fetch the metadata for all badge exports, using the zip file Id. 
       parameters:
@@ -104,7 +103,7 @@ paths:
     patch:
       tags:
       - v1.0
-      summary: Update badge export print status
+      summary: printQueue/updateStatus/{badgeZipFileId}
       description: |
         Set the status and job id of a badge export zip file, using its Id.
       parameters:

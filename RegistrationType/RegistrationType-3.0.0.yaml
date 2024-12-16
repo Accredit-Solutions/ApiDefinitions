@@ -6,7 +6,6 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
@@ -14,7 +13,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: List registration type details
+      summary: registrationType
       description: |
         Fetch details data about all available registration types.
       responses:
@@ -30,7 +29,7 @@ paths:
     get:
       tags:
       - v3.0
-      summary: Get registration type details
+      summary: registrationType/{registrationTypeId}
       description: |
         Fetch detailed data about an existing registration type.
       parameters:
