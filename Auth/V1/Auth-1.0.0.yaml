@@ -8,7 +8,6 @@ info:
   version: 1.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 paths:
   /token:
     post:

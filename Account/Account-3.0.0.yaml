@@ -6,7 +6,6 @@ info:
   version: 3.0.0
 servers:
 - url: https://demo2022-uat-api.accredit-solutions.com
-  description: SwaggerHub API Auto Mocking
 security:
 - bearerAuth: []
 paths:
