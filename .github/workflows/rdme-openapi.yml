@@ -83,24 +83,87 @@ jobs:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Unpublished\V3DataEndpoints-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66f57bcf36dc7d0010b6ecbf
 
       # V3.0
-      - name: Update V3.0 References
+      - name: V3.0 AccessControl
         uses: readmeio/rdme@v9
         with:
-          rdme: |
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/AccessControl/AccessControl-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676012daeb21e6846dff3873 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Account/Account-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676014171e08f97a559564be &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Badge\Badge-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760153ec5890f0010dc06d2 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/BadgeAccess\BadgeAccess-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760158e9cf1c83247176167 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/BadgePrintQueue\BadgePrintQueue-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676015c2e76bc84bb2a5d3cf &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Contact\Contact-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601651871a7a09191ece61 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/ContactManagement\ContactManagement-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601689053d22fe9bf8ed44 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Event\Event-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676016bdd80701e894ef7a73 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/FunctionalArea\FunctionalArea-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676016ed4022699ebf2eead8 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Matrix\Matrix-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760171b344192000f763918 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Organisation\Organisation-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017485e36217d18056261 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Question\Question-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760177967bce6324e0a4194 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Registration\Registration-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017a44a23a5bd381b9c01 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/RegistrationStatus\RegistrationStatus-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017e7d8897058d4ccffd9 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/RegistrationType\RegistrationType-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760181e116fa3da9275f485 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Role\Role-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760184cb4bacf5458ade680 &&
-            openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/WebhookSubscription\WebhookSubscription-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601878e747c284e47d54b3
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/AccessControl/AccessControl-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676012daeb21e6846dff3873
+
+      - name: V3.0 Account
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Accoun/Account-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676014171e08f97a559564be
+
+      - name: V3.0 Badge
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Badge/Badge-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760153ec5890f0010dc06d2
+
+      - name: V3.0 BadgeAccess
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/BadgeAccess/BadgeAccess-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760158e9cf1c83247176167
+
+      - name: V3.0 BadgePrintQueue
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/BadgePrintQueue/BadgePrintQueue-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676015c2e76bc84bb2a5d3cf
+
+      - name: V3.0 Contact
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Contact/Contact-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601651871a7a09191ece61
+
+      - name: V3.0 ContactManagement
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/ContactManagement/ContactManagement-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601689053d22fe9bf8ed44
+
+      - name: V3.0 Event
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Event/Event-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676016bdd80701e894ef7a73
+
+      - name: V3.0 FunctionalArea
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/FunctionalArea/FunctionalArea-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676016ed4022699ebf2eead8
+
+      - name: V3.0 Matrix
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Matrix/Matrix-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760171b344192000f763918
+
+      - name: V3.0 Organisation
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Organisation/Organisation-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017485e36217d18056261
+
+      - name: V3.0 Question
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Question/Question-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760177967bce6324e0a4194
+
+      - name: V3.0 Registration
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Registration/Registration-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017a44a23a5bd381b9c01
+
+      - name: V3.0 RegistrationStatus
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/RegistrationStatus/RegistrationStatus-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=676017e7d8897058d4ccffd9
+
+      - name: V3.0 RegistrationType
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/RegistrationType/RegistrationType-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760181e116fa3da9275f485
+
+      - name: V3.0 Role
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Role/Role-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6760184cb4bacf5458ade680
+
+      - name: V3.0 WebhookSubscription
+        uses: readmeio/rdme@v9
+        with:
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/WebhookSubscription/WebhookSubscription-3.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67601878e747c284e47d54b3
