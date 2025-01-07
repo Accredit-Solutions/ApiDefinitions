@@ -17,57 +17,58 @@ jobs:
       - name: Check out repo 📚
         uses: actions/checkout@v3
 
-      - name: Run `openapi` command 🚀
+      # V2.0
+      - name: V2.0 AccessControl
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Event/Event-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f1367a857d005ad25aa0
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Auth
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Auth/Auth-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627999ed9920d004f412b4c
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Account
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Account/Account-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6629339e4172f4005f818ddb
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Badge
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Badge/Badge-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f0e4f7b018004bee99b7
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Badge Print Queue
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/BadgePrintQueue/BadgePrintQueue-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627d6e4b509f100190719e0
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Contact
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Contact/Contact-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f10dbf39b100316106a9
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Contact Management
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/ContactManagement/ContactManagement-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66292dd9fd5e7f004a35e56e
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Event
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Event/Event-2.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627f1367a857d005ad25aa0
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Organisation
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/Organisation/Organisation-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=6627d8419a0ee400537b56a0
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Webhook Subscription
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/WebhookSubscription/WebhookSubscription-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66278caaee44dd00129f9044
 
-      - name: Run `openapi` command 🚀
+      - name: V2.0 Access Control
         uses: readmeio/rdme@v8
         with:
           rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/AccessControl/AccessControl-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=66db278998d439001a29e563
