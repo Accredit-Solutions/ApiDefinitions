@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List registration type details
       description: |
-        Fetch details data about all available registration types.
+        Fetch details of all available registration types.
       responses:
         "200":
           description: Registration type details

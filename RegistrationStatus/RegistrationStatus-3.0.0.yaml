@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List Registration Statuses
       description: |
-        Fetch details data about all available registration statuses.
+        Fetch details of all available registration statuses.
       responses:
         "200":
           description: Registration status details

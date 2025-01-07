@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List event details
       description: |
-        Fetch details data about all available events.
+        Fetch details of all available events.
       parameters:
       - name: dateTo
         description: Filter results by their DateTo timestamp.

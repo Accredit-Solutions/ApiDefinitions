@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List registration details
       description: |
-        Fetch details data about all available registrations.
+        Fetch details of all available registrations.
       parameters:
       - name: eventId
         description: Filter results by event.

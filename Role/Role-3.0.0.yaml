@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List role details
       description: |
-        Fetch details data about all available roles.
+        Fetch details of all available roles.
       responses:
         "200":
           description: role details

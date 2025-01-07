@@ -15,7 +15,7 @@ paths:
       - v3.0
       summary: List matrix details
       description: |
-        Fetch details data about all available matrices.
+        Fetch details of all available matrices.
       parameters:
       - name: functionalAreaId
         description: Filter results by event account type.

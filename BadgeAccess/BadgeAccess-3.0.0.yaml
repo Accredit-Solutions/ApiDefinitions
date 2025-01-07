@@ -16,7 +16,7 @@ paths:
       - v3.0
       summary: List badge access details
       description: |
-        Fetch details data about all available badge access.
+        Fetch details of all available badge access.
       responses:
         "200":
           description: Badge access details

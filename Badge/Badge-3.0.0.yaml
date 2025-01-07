@@ -150,7 +150,7 @@ paths:
       - v3.0
       summary: List badges
       description: |
-        Fetch details data about all available badges.
+        Fetch details of all available badges.
       parameters:
       - name: registrationId
         description: Filter results by registration.
@@ -179,7 +179,7 @@ paths:
       - v3.0
       summary: Get badge details
       description: |
-        Fetch detailed data about an existing badges.
+        Fetch detailed data about an existing badge.
       parameters:
       - name: barcode
         in: path

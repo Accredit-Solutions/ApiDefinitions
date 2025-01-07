@@ -47,7 +47,7 @@ paths:
       - v3.0
       summary: List contact details
       description: |
-        Fetch details data about all available contact.
+        Fetch details of all available contacts.
       parameters:
       - name: emailAddress
         description: Filter results by email address.
@@ -101,7 +101,7 @@ paths:
       - v3.0
       summary: List contact question details
       description: |
-        Fetch contact question answers linked for an existing contact.
+        Fetch contact question answers linked to an existing contact.
       parameters:
       - name: contactId
         in: path
