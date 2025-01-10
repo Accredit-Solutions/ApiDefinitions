@@ -12,7 +12,7 @@ paths:
   /api/printQueue/listBadgeExportZipFiles:
     post:
       tags:
-      - v1.0
+      - v1
       summary: List all badge export zip files
       description: |
         Retrieve the details of all Badge Export Zip Files available to your user.
@@ -39,7 +39,7 @@ paths:
   /api/printQueue/downloadBadgeExportFile/{badgeZipFileId}:
     get:
       tags:
-      - v1.0
+      - v1
       summary: Get badge export zip file
       description: |
         Download a badge export zip file using its id.
@@ -71,7 +71,7 @@ paths:
   /api/printQueue/getBadgeExportMetadata/{badgeZipFileId}:
     get:
       tags:
-      - v1.0
+      - v1
       summary: Get badge export metadata
       description: |
         Fetch the metadata for all badge exports, using the zip file Id. 
@@ -102,7 +102,7 @@ paths:
   /api/printQueue/updateStatus/{badgeZipFileId}:
     patch:
       tags:
-      - v1.0
+      - v1
       summary: Update badge export print status
       description: |
         Set the status and job id of a badge export zip file, using its Id.

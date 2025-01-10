@@ -10,10 +10,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/badgeAccess:
+  /api/v3/badgeAccess:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List badge access details
       description: |
         Fetch details of all available badge access.
@@ -26,10 +26,10 @@ paths:
                 $ref: '#/components/schemas/ListBadgeAccessResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/badgeAccess/{badgeAccessId}:
+  /api/v3/badgeAccess/{badgeAccessId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get badge access details
       description: |
         Fetch detailed data about an existing badge access.

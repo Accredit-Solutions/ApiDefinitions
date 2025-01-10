@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v2.0/account:
+  /api/v2/account:
     get:
       tags:
-      - v2.0
+      - v2
       summary: List all accounts
       description: Retrieve a list of all available accounts.
       parameters:
@@ -53,7 +53,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
     post:
       tags:
-      - v2.0
+      - v2
       summary: Create a new account
       description: Insert an account in the Accredit system.
       requestBody:
@@ -77,10 +77,10 @@ paths:
                 $ref: '#/components/schemas/BaseResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v2.0/account/{accountId}:
+  /api/v2/account/{accountId}:
     get:
       tags:
-      - v2.0
+      - v2
       summary: Get an existing account
       description: Retrieve details of a specific account by its Id.
       parameters:
@@ -103,7 +103,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
     patch:
       tags:
-      - v2.0
+      - v2
       summary: Update an account
       description: Update an existing account by providing its Id.
       parameters:

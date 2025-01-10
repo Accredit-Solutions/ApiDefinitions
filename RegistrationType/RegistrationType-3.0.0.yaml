@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/registrationType:
+  /api/v3/registrationType:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List registration type details
       description: |
         Fetch details of all available registration types.
@@ -25,10 +25,10 @@ paths:
                 $ref: '#/components/schemas/ListRegistrationTypeResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/registrationType/{registrationTypeId}:
+  /api/v3/registrationType/{registrationTypeId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get registration type details
       description: |
         Fetch detailed data about an existing registration type.

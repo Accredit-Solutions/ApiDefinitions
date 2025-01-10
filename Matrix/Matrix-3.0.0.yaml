@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/matrix:
+  /api/v3/matrix:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List matrix details
       description: |
         Fetch details of all available matrices.
@@ -44,10 +44,10 @@ paths:
                 $ref: '#/components/schemas/ListMatrixResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/matrix/{matrixId}:
+  /api/v3/matrix/{matrixId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get matrix details
       description: |
         Fetch detailed data about an existing matrix.

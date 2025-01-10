@@ -12,7 +12,7 @@ paths:
   /api/organisation:
     get:
       tags:
-      - v1.0
+      - v1
       summary: List available organisations
       description: |
         List all organisations available to the current user.
@@ -27,7 +27,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
     post:
       tags:
-      - v1.0
+      - v1
       summary: Create a new organisation
       description: |
         Insert an organisation in the Accredit system.
@@ -55,7 +55,7 @@ paths:
   /api/organisation/{organisationId}:
     get:
       tags:
-      - v1.0
+      - v1
       summary: Get an existing organisations
       description: |
         Fetch the details of an existing organisation by its Id.
@@ -85,7 +85,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
     patch:
       tags:
-      - v1.0
+      - v1
       summary: Update an existing organisation
       description: |
         Update the details of an existing organisation by its Id.
@@ -122,7 +122,7 @@ paths:
   /api/organisation/{organisationId}/allocation:
     get:
       tags:
-      - v1.0
+      - v1
       summary: Get organisation allocations
       description: |
         Fetch the available event / role allocations of an organisation by its Id.

@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/registrationStatus:
+  /api/v3/registrationStatus:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List Registration Statuses
       description: |
         Fetch details of all available registration statuses.
@@ -25,10 +25,10 @@ paths:
                 $ref: '#/components/schemas/ListRegistrationStatusResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/registrationStatus/{registrationStatusCode}:
+  /api/v3/registrationStatus/{registrationStatusCode}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get registration status details
       description: |
         Fetch detailed data about an existing registration status.

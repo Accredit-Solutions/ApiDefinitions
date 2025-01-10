@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/functionalArea:
+  /api/v3/functionalArea:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List functional area details
       description: |
         Fetch details of all available funcitonal areas.
@@ -25,10 +25,10 @@ paths:
                 $ref: '#/components/schemas/ListFunctionalAreaResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/functionalArea/{functionalAreaId}:
+  /api/v3/functionalArea/{functionalAreaId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get functional area details
       description: |
         Fetch detailed data about an existing functional area.

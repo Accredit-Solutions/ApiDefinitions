@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v2.0/badge/areas:
+  /api/v2/badge/areas:
     get:
       tags:
-      - v2.0
+      - v2
       summary: List all available areas
       description: |
         Fetches the details of all Access Control areas available to your user.
@@ -31,10 +31,10 @@ paths:
                 $ref: '#/components/schemas/BaseResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v2.0/badge/validation:
+  /api/v2/badge/validation:
     post:
       tags:
-      - v2.0
+      - v2
       summary: Validate a badge against an area
       description: |
         Perform a badge validation by area and barcode for a real-time response.
@@ -59,10 +59,10 @@ paths:
                 $ref: '#/components/schemas/BadgeValidationResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v2.0/badge/validationResults:
+  /api/v2/badge/validationResults:
     get:
       tags:
-      - v2.0
+      - v2
       summary: Bulk download for offline mode scanning
       description: "Allows users to bulk download all barcodes currently active with the expected response from every active Area on Accredit. \n\nThis allows for a bulk snapshot download of barcodes in case of a loss in connectivity with the real-time service. This is particulary useful for scanners that are in areas with poor connectivity\n"
       parameters:
@@ -119,7 +119,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
     post:
       tags:
-      - v2.0
+      - v2
       summary: Initiate bulk validation job
       description: |
         Sets up a background job to run multiple badge validations. 
@@ -144,10 +144,10 @@ paths:
                 $ref: '#/components/schemas/BadgeValidationResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/badge:
+  /api/v3/badge:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List badges
       description: |
         Fetch details of all available badges.
@@ -173,10 +173,10 @@ paths:
                 $ref: '#/components/schemas/ListBadgeResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/badge/{barcode}:
+  /api/v3/badge/{barcode}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get badge details
       description: |
         Fetch detailed data about an existing badge.

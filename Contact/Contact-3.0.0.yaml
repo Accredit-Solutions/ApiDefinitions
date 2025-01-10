@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v2.0/contact/getData:
+  /api/v2/contact/getData:
     post:
       tags:
-      - v2.0
+      - v2
       summary: Fetch user report contact details
       description: |
         This API has a configurable response body, based upon the report assigned to your user.
@@ -41,10 +41,10 @@ paths:
                 $ref: '#/components/schemas/BaseResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/contact:
+  /api/v3/contact:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List contact details
       description: |
         Fetch details of all available contacts.
@@ -70,10 +70,10 @@ paths:
                 $ref: '#/components/schemas/ListContactResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/contact/{contactId}:
+  /api/v3/contact/{contactId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get contact details
       description: |
         Fetch detailed data about an existing contact.
@@ -95,10 +95,10 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
         "404":
           description: "Not Found: The specified resource cannot be found"
-  /api/v3.0/contact/{contactId}/question:
+  /api/v3/contact/{contactId}/question:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List contact question details
       description: |
         Fetch contact question answers linked to an existing contact.
@@ -120,10 +120,10 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
         "404":
           description: "Not Found: The specified resource cannot be found"
-  /api/v3.0/contact/{contactId}/additionalInformation:
+  /api/v3/contact/{contactId}/additionalInformation:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List contact additional information
       description: |
         Fetch additional information about an existing contact.

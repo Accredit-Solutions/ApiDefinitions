@@ -12,7 +12,7 @@ paths:
   /api/contactManagement/insertContact:
     post:
       tags:
-      - v1.0
+      - v1
       summary: Insert a new contact
       requestBody:
         content:
@@ -38,7 +38,7 @@ paths:
   /api/contactManagement/updateContact:
     post:
       tags:
-      - v1.0
+      - v1
       summary: Update an existing contact
       requestBody:
         content:
@@ -64,7 +64,7 @@ paths:
   /api/contactManagement/registerContact:
     post:
       tags:
-      - v1.0
+      - v1
       summary: Register an existing contact
       requestBody:
         content:
@@ -90,7 +90,7 @@ paths:
   /api/contactManagement/updateRegistration:
     post:
       tags:
-      - v1.0
+      - v1
       summary: Update an existing registration
       requestBody:
         content:
@@ -116,7 +116,7 @@ paths:
   /api/contactManagement/offboardContact:
     post:
       tags:
-      - v1.0
+      - v1
       summary: Offboard an existing contact
       requestBody:
         content:

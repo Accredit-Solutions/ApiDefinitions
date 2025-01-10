@@ -9,10 +9,10 @@ servers:
 security:
 - bearerAuth: []
 paths:
-  /api/v3.0/role:
+  /api/v3/role:
     get:
       tags:
-      - v3.0
+      - v3
       summary: List role details
       description: |
         Fetch details of all available roles.
@@ -25,10 +25,10 @@ paths:
                 $ref: '#/components/schemas/ListRoleResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /api/v3.0/role/{roleId}:
+  /api/v3/role/{roleId}:
     get:
       tags:
-      - v3.0
+      - v3
       summary: Get role details
       description: |
         Fetch detailed data about an existing role.
