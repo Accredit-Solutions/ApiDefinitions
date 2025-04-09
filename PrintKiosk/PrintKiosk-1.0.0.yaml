@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Print Kiosk
+  title: Badge Print Kiosk
   description: "## Accredit API for print kiosk functionality\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
   version: 1.0.0
 servers:
@@ -23,7 +23,7 @@ paths:
                 $ref: '#/components/schemas/AreaResponse'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /printKiosk:
+  /api/printKiosk:
     post:
       tags:
         - v1
@@ -46,7 +46,7 @@ paths:
                 $ref: '#/components/schemas/BaseResponseWithErrors'
         "401":
           description: "Unauthorised: Access token is missing or invalid"
-  /printKiosk/{badgeId}:
+  /api/printKiosk/{badgeId}:
     get:
       tags:
         - v1
@@ -61,7 +61,7 @@ paths:
             format: uuid
       responses:
         '200':
-          description: Badge file
+          description: Badge pdf file
           content:
             application/pdf:
               schema:
@@ -77,7 +77,7 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
         "404":
           description: "Not Found: The specified resource cannot be found"
-  /printKiosk/{badgeId}/status:
+  /api/printKiosk/{badgeId}/status:
     patch:
       tags:
         - v1
