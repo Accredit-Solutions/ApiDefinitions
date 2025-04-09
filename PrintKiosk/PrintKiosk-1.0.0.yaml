@@ -122,6 +122,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AreaDetails'
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
     AreaDetails:
       type: object
       properties:
