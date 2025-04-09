@@ -162,4 +162,4 @@ jobs:
       - name: V1.0 PrintKiosk
         uses: readmeio/rdme@v9
         with:
-          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/PrintKiosk/PrintKiosk/PrintKiosk-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67f693f4a4ba340011e9b67a
+          rdme: openapi https://github.com/Accredit-Solutions/ApiDefinitions/blob/main/PrintKiosk/PrintKiosk-1.0.0.yaml --key=${{ secrets.README_API_KEY }} --id=67f693f4a4ba340011e9b67a
