@@ -1,0 +1,199 @@
+openapi: 3.0.0
+info:
+  title: Print Kiosk
+  description: "## Accredit API for print kiosk functionality\n\nFor authorisation, please provide a valid bearer token in your request.\nIf you do not have one, please refer to our \n  [Auth Token Endpoint Documentation](https://app.swaggerhub.com/apis-docs/ACCREDIT/Auth/1.0.0).\n"
+  version: 1.0.0
+servers:
+- url: https://demo2022-uat-api.accredit-solutions.com
+security:
+  - bearerAuth: []
+paths:
+  /api/printKiosk/areas:
+    get:
+      tags:
+        - v1
+      summary: List print kiosk areas
+      description: Fetch details of all available print kiosk areas.
+      responses:
+        "200":
+          description: Available print kiosk areas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /printKiosk:
+    post:
+      tags:
+        - v1
+      summary: Process print kiosk request
+      description: This endpoint is used to validate and process a print kiosk request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintKioskRequest'
+      responses:
+        '200':
+          description: Request processed successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /printKiosk/{badgeId}:
+    get:
+      tags:
+        - v1
+      summary: Get badge file for printing
+      description: This endpoint is used to retrieve the badge file for printing.
+      parameters:
+        - name: badgeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Badge file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /printKiosk/{badgeId}/status:
+    patch:
+      tags:
+        - v1
+      summary: Update print kiosk status
+      description: This endpoint is used to update the status of a print kiosk badge.
+      parameters:
+        - name: badgeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrintKioskStatusRequest'
+      responses:
+        '200':
+          description: Status updated successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    AreaResponse:
+      type: object
+      properties:
+        Areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/AreaDetails'
+    AreaDetails:
+      type: object
+      properties:
+        Name:
+          type: string
+        Id:
+          type: string
+          format: uuid
+    PrintKioskRequest:
+      type: object
+      required:
+        - AreaId
+        - ExternalId
+      properties:
+        AreaId:
+          type: string
+          format: uuid
+          description: The Id of the print kiosk area 
+        ExternalId:
+          type: string
+          description: External Id assigned to the contact
+          maxLength: 255
+    UpdatePrintKioskStatusRequest:
+      type: object
+      required:
+        - Status
+      properties:
+        Status:
+          type: string
+          description: Associated status code
+          maxLength: 5
+          example: "RTP"
+
+    BaseResponseWithErrors:
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 400
+        Errors:
+          type: array
+          description: List of error details; may not be comprehensive if an early exception occurs during request processing.
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+    ErrorDetails:
+      type: object
+      properties:
+        DataElement:
+          type: string
+          description: "Specifies the request field that caused the error, if applicable."
+        Error:
+          type: string
+          description: "A descriptive explanation of the error, if available."
+        ErrorCode:
+          type: string
+          description: The Accredit error code. Please refer to our error code documentation for further detail
+        ValueProvided:
+          type: string
+          description: "Specifies the request value that caused the error, if applicable."
+    BaseResponse:
+      type: object
+      properties:
+        HttpStatusCode:
+          type: integer
+          description: The HTTPStatusCode of the response
+          example: 200
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BaseResponseWithErrors'
+    UnauthorizedError:
+      description: "Unauthorised: Access token is missing or invalid"
