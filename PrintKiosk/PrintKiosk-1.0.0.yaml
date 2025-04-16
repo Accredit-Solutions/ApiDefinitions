@@ -188,11 +188,13 @@ components:
     AreaDetails:
       type: object
       properties:
-        Name:
-          type: string
         Id:
           type: string
           format: uuid
+        Name:
+          type: string
+        Description:
+          type: string
     PrintKioskRequest:
       type: object
       required:
