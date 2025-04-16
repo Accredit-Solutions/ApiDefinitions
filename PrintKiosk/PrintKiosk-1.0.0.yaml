@@ -8,21 +8,6 @@ servers:
 security:
   - bearerAuth: []
 paths:
-  /api/printKiosk/areas:
-    get:
-      tags:
-        - v1
-      summary: List print kiosk areas
-      description: Fetch details of all available print kiosk areas.
-      responses:
-        "200":
-          description: Available print kiosk areas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AreaResponse'
-        "401":
-          description: "Unauthorised: Access token is missing or invalid"
   /api/printKiosk:
     post:
       tags:
@@ -109,6 +94,82 @@ paths:
           description: "Unauthorised: Access token is missing or invalid"
         "404":
           description: "Not Found: The specified resource cannot be found"
+  /api/printKiosk/areas:
+    get:
+      tags:
+        - v1
+      summary: List print kiosk areas
+      description: Fetch details of all available print kiosk areas.
+      responses:
+        "200":
+          description: Available print kiosk areas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AreaResponse'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+  /api/printKiosk/badges:
+    post:
+      tags:
+        - v1
+      summary: Get multiple badge files for printing
+      description: Generated a zip file of badge pdfs. It will lookup all badges by the provided Id's and ensure they are valid and ready to print. If all are found and valid, it will return the associated pdf files as a single zip file.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadgeIdsRequest'
+      responses:
+        '200':
+          description: Zip file containing badge PDFs
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+  /api/printKiosk/badges/{areaId}:
+    get:
+      tags:
+        - v1
+      summary: Get available badge Ids for an area
+      description: Returns the badge ids available for Kiosk Printing, filtered by the supplied areaId.
+      parameters:
+        - name: areaId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of available badge IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgeIdsResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponseWithErrors'
+        "401":
+          description: "Unauthorised: Access token is missing or invalid"
+        "404":
+          description: "Not Found: The specified resource cannot be found"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -156,6 +217,28 @@ components:
           description: Associated status code
           maxLength: 5
           example: "RTP"
+    BadgeIdsRequest:
+      type: object
+      required:
+        - BadgeIds
+      properties:
+        BadgeIds:
+          type: array
+          description: List of badge IDs to retrieve
+          items:
+            type: string
+            format: uuid
+    BadgeIdsResponse:
+      type: object
+      properties:
+        BadgeIds:
+          type: array
+          description: List of available badge IDs
+          items:
+            type: string
+            format: uuid
+      allOf:
+      - $ref: '#/components/schemas/BaseResponse'
 
     BaseResponseWithErrors:
       properties:
